@@ -6748,10 +6748,10 @@ export default function Home() {
 
     <nav className="nav-links">
       <a
-        href="https://www.jaseir.com/services/"
-      >
-        Services
-      </a>
+  href="https://www.jaseir.com/"
+>
+  Services
+</a>
 
       <a href="#agent-workspace" className="nav-active">
   AI Agents
