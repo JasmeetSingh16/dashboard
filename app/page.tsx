@@ -6753,9 +6753,9 @@ export default function Home() {
         Services
       </a>
 
-      <a href="#agents">
-        AI Agents
-      </a>
+      <a href="#agent-workspace" className="nav-active">
+  AI Agents
+</a>
 
       <a href="#how-it-works">
         How It Works
