@@ -6740,11 +6740,15 @@ export default function Home() {
       <header className="nav">
   <div className="nav-inner">
     <a
-      href="https://www.jaseir.com/"
-      className="logo"
-    >
-      JASEIR <span>AI</span>
-    </a>
+  href="https://www.jaseir.com/"
+  className="logo"
+>
+  <img
+    src="/logo.webp"
+    alt="Jaseir"
+    className="jaseir-logo"
+  />
+</a>
 
     <nav className="nav-links">
       <a

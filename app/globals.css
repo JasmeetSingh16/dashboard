@@ -36,6 +36,13 @@ select {
   font: inherit;
 }
 
+.jaseir-logo {
+  display: block;
+  width: 145px;
+  height: auto;
+  object-fit: contain;
+}
+
 button {
   cursor: pointer;
 }
