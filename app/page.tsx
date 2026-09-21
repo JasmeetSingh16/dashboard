@@ -6738,58 +6738,53 @@ export default function Home() {
       {/* ============================================================ */}
 
       <header className="nav">
-        <div className="nav-inner">
-          <Link
-            href="/"
-            className="logo"
-          >
-            JASEIR <span>AI</span>
-          </Link>
+  <div className="nav-inner">
+    <a
+      href="https://www.jaseir.com/"
+      className="logo"
+    >
+      JASEIR <span>AI</span>
+    </a>
 
-          <nav className="nav-links">
-            <a href="#platform">
-              Platform
-            </a>
+    <nav className="nav-links">
+      <a
+        href="https://www.jaseir.com/services/"
+      >
+        Services
+      </a>
 
-            <a href="#solutions">
-              Solutions
-            </a>
+      <a href="#agents">
+        AI Agents
+      </a>
 
-            <a href="#agents">
-              AI Agents
-            </a>
+      <a href="#how-it-works">
+        How It Works
+      </a>
 
-            <a href="#how-it-works">
-              How It Works
-            </a>
+      <a
+        href="https://www.jaseir.com/about/"
+      >
+        About
+      </a>
 
-            <a href="#resources">
-              Resources
-            </a>
+      <a
+        href="https://www.jaseir.com/contact/"
+      >
+        Contact
+      </a>
+    </nav>
 
-            <a href="#pricing">
-              Pricing
-            </a>
-          </nav>
-
-          <div className="nav-actions">
-            <a
-              className="signin"
-              href="#signin"
-            >
-              Sign in
-            </a>
-
-            <a
-              className="get-started"
-              href="#agents"
-            >
-              Get Started
-              <span>→</span>
-            </a>
-          </div>
-        </div>
-      </header>
+    <div className="nav-actions">
+      <a
+        className="get-started"
+        href="https://www.jaseir.com/contact/"
+      >
+        Get Started
+        <span>→</span>
+      </a>
+    </div>
+  </div>
+</header>
 
       {/* ============================================================ */}
       {/* HERO                                                          */}
