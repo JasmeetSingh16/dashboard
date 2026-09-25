@@ -1,0 +1,231 @@
+/* ========================================================= */
+/* HOME — RAG AI TEASER                                        */
+/* Reuses .agentlab-* heading / step / button styles with the  */
+/* RAG page palette (#070A13, #7C5CFF → #22D3EE, #34D399).     */
+/* ========================================================= */
+
+.rag-home {
+  position: relative;
+  overflow: clip;
+  padding: 110px 0 120px;
+  color: #fff;
+  background-color: #070a13;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+.rag-home-glow {
+  position: absolute;
+  right: -10%;
+  top: 50%;
+  width: 900px;
+  height: 700px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(124, 92, 255, 0.22), rgba(34, 211, 238, 0.06) 50%, transparent 70%);
+  pointer-events: none;
+}
+
+.rag-home-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 520px);
+  gap: 70px;
+  align-items: center;
+}
+
+.rag-home .agentlab-section-eyebrow {
+  color: #22d3ee;
+}
+
+.rag-home .agentlab-section-eyebrow span {
+  background: linear-gradient(90deg, #7c5cff, #22d3ee);
+}
+
+.rag-home .rag-home-heading {
+  margin-bottom: 30px;
+}
+
+.rag-home .rag-home-heading h2 {
+  font-size: clamp(44px, 4.8vw, 72px);
+  color: #f4f6ff;
+}
+
+.rag-home .rag-home-heading h2 span {
+  background: linear-gradient(90deg, #7c5cff, #22d3ee);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.rag-home .rag-home-heading p {
+  color: #a0a8c3;
+}
+
+.rag-home .agentlab-step {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.rag-home .agentlab-step-number {
+  color: #6d7592;
+}
+
+.rag-home .agentlab-step-name {
+  color: #e3e7f7;
+}
+
+.rag-home .agentlab-step-check {
+  border-color: rgba(52, 211, 153, 0.5);
+  background: rgba(52, 211, 153, 0.12);
+  color: #34d399;
+}
+
+.rag-home .rag-home-cta {
+  color: #fff;
+  background: linear-gradient(90deg, #7c5cff, #22d3ee);
+  box-shadow: 0 15px 45px rgba(124, 92, 255, 0.3);
+}
+
+.rag-home .rag-home-cta:hover {
+  background: linear-gradient(90deg, #8a6cff, #3adcf2);
+  box-shadow: 0 20px 55px rgba(124, 92, 255, 0.4);
+}
+
+/* Chat visual */
+.rag-home-chat {
+  position: relative;
+  border-radius: 20px;
+  background: rgba(12, 16, 31, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.45), 0 0 70px rgba(124, 92, 255, 0.14);
+  overflow: hidden;
+}
+
+.rag-home-chat-top {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 15px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 14px;
+}
+
+.rag-home-avatar {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #7c5cff, #22d3ee);
+}
+
+.rag-home-chat-top em {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  color: #34d399;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.rag-home-chat-top em i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 8px #34d399;
+}
+
+.rag-home-chat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px 18px 26px;
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+
+.rag-home-q {
+  align-self: flex-end;
+  max-width: 85%;
+  padding: 11px 14px;
+  border-radius: 14px 14px 4px 14px;
+  background: linear-gradient(135deg, #6b4ff0, #1fb6d4);
+}
+
+.rag-home-retrieval {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #8f98b8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11.5px;
+}
+
+.rag-home-orb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff 0 8%, #7c5cff 45%, #22d3ee 90%);
+  box-shadow: 0 0 14px rgba(124, 92, 255, 0.8);
+  animation: rag-home-pulse 1.8s ease-in-out infinite;
+}
+
+.rag-home-a {
+  align-self: flex-start;
+  max-width: 90%;
+  padding: 12px 14px;
+  border-radius: 14px 14px 14px 4px;
+  color: #e4e7f4;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.rag-home-source {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  margin-top: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  background: rgba(52, 211, 153, 0.09);
+  color: #34d399;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11.5px;
+}
+
+@keyframes rag-home-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+}
+
+@media (max-width: 900px) {
+  .rag-home {
+    padding: 80px 0 90px;
+  }
+
+  .rag-home-inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 44px;
+  }
+}
+
+@media (max-width: 620px) {
+  .rag-home-inner {
+    width: calc(100% - 32px);
+  }
+
+  .rag-home .rag-home-heading h2 {
+    letter-spacing: -2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rag-home-orb {
+    animation: none;
+  }
+}

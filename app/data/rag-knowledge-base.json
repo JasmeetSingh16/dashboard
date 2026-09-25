@@ -1,0 +1,144 @@
+{
+  "_readme": "Sample knowledge base for the live demo on /rag-knowledge-assistant/. Edit freely. Each chunk needs: id, title, source (shown on the source chip), sourceType (which hero file card lights up: pricing | faq | policy | website), keywords (extra words that should match this chunk) and text (the answer shown to the visitor). 'synonyms' maps a canonical word to other words/spellings (incl. informal spellings) that mean the same thing. 'weakWords' are words that appear in almost every question (they still count, but only a little).",
+  "weakWords": ["ai", "assistant", "chatbot", "business", "customer", "customers"],
+  "chunks": [
+    {
+      "id": "services-overview",
+      "title": "What Jaseir does",
+      "source": "Website · Services",
+      "sourceType": "website",
+      "keywords": ["service", "offer", "jaseir", "company", "about", "help", "web", "website", "development", "ecommerce", "build"],
+      "text": "Jaseir builds AI and growth systems for businesses: AI automation and agents, AI knowledge assistants (RAG), SEO and AI search visibility, CRM and workflow automation, and web development and ecommerce. Everything is connected to the tools your team already uses."
+    },
+    {
+      "id": "rag-assistant",
+      "title": "AI knowledge assistant (RAG)",
+      "source": "Website · Knowledge AI",
+      "sourceType": "website",
+      "keywords": ["rag", "assistant", "chatbot", "bot", "knowledge", "document", "train", "custom"],
+      "text": "The Jaseir knowledge assistant answers questions using your own documents, website pages, SOPs, catalogs and FAQs. Every answer shows the source it came from, and when the assistant isn't sure, it hands the conversation to your team instead of guessing."
+    },
+    {
+      "id": "how-it-works",
+      "title": "How the assistant works",
+      "source": "FAQ",
+      "sourceType": "faq",
+      "keywords": ["how", "work", "process", "step", "retrieval", "index", "upload"],
+      "text": "It works in four steps: 1) Connect — upload documents, website pages, FAQs, catalogs or a Google Drive folder. 2) Understand — the content is organized and indexed. 3) Retrieve — for each question, the most relevant passages are found. 4) Answer — the assistant replies in plain language with the source, or escalates to a human."
+    },
+    {
+      "id": "channels",
+      "title": "Where the assistant works",
+      "source": "FAQ",
+      "sourceType": "faq",
+      "keywords": ["whatsapp", "website", "instagram", "channel", "internal", "team", "where"],
+      "text": "The same assistant can run as a chat widget on your website, on WhatsApp, in Instagram DMs, and as an internal assistant for your team so staff can find answers in SOPs and documents without asking around."
+    },
+    {
+      "id": "languages",
+      "title": "Multilingual support",
+      "source": "FAQ",
+      "sourceType": "faq",
+      "keywords": ["language", "multilingual", "translate", "english", "foreign", "international", "global", "spanish", "french", "arabic", "german", "portuguese", "italian", "chinese", "japanese", "hindi", "write", "speak"],
+      "text": "The assistant is multilingual: customers can ask in the language they are most comfortable with, and it replies in that same language — 24/7, in every time zone."
+    },
+    {
+      "id": "setup-time",
+      "title": "Setup time",
+      "source": "Pricing.pdf",
+      "sourceType": "pricing",
+      "keywords": ["setup", "time", "launch", "day", "long", "fast", "timeline", "start"],
+      "text": "The Starter package launches in about 7 days once we receive your documents and common questions. Growth and Custom setups take longer depending on channels and integrations — we share a clear timeline before starting."
+    },
+    {
+      "id": "packages",
+      "title": "Packages and pricing",
+      "source": "Pricing.pdf",
+      "sourceType": "pricing",
+      "keywords": ["price", "starter", "growth", "custom", "package"],
+      "text": "There are three packages. Starter: a website chatbot trained on up to 50 documents. Growth: website + WhatsApp with CRM integration and lead capture. Custom: agentic RAG with multiple sources and custom integrations, quoted separately. The Jaseir team shares exact pricing after a short call about your content and goals."
+    },
+    {
+      "id": "free-demo",
+      "title": "Free demo on your documents",
+      "source": "Pricing.pdf",
+      "sourceType": "pricing",
+      "keywords": ["demo", "free", "trial", "try", "test", "sample"],
+      "text": "You can see it working before you pay. Send 5 documents and your 10 most common customer questions, and Jaseir will set up a demo assistant on your own content."
+    },
+    {
+      "id": "data-privacy",
+      "title": "Data privacy",
+      "source": "Policy.docx",
+      "sourceType": "policy",
+      "keywords": ["data", "safe", "secure", "security", "privacy", "private", "confidential"],
+      "text": "Your content is used only to answer questions for your business. It is never used to train public AI models, and the assistant only answers from the content you approve."
+    },
+    {
+      "id": "human-handoff",
+      "title": "When the AI doesn't know",
+      "source": "Policy.docx",
+      "sourceType": "policy",
+      "keywords": ["know", "unsure", "wrong", "human", "handoff", "escalate", "hallucinate", "mistake"],
+      "text": "If the answer isn't in your approved content, the assistant says it doesn't know and offers to connect the customer with your team — on WhatsApp, email or your CRM — instead of making something up."
+    },
+    {
+      "id": "lead-qualification",
+      "title": "AI Lead Qualification agent",
+      "source": "Website · AI Agents",
+      "sourceType": "website",
+      "keywords": ["lead", "qualification", "qualify", "score", "crm", "sales", "agent", "alert"],
+      "text": "The AI Lead Qualification agent works with the knowledge assistant: after a customer's question is answered, it scores the lead, updates your CRM and sends your team a WhatsApp alert for hot leads."
+    },
+    {
+      "id": "seo",
+      "title": "SEO & AI search visibility",
+      "source": "Website · Services",
+      "sourceType": "website",
+      "keywords": ["seo", "search", "google", "ranking", "visibility", "chatgpt"],
+      "text": "Jaseir improves how your business appears in Google and in AI answer engines with technical SEO, content strategy, entity signals and visibility analysis."
+    },
+    {
+      "id": "crm-automation",
+      "title": "CRM & workflow automation",
+      "source": "Website · Services",
+      "sourceType": "website",
+      "keywords": ["crm", "workflow", "automation", "automate", "integration", "email", "form"],
+      "text": "Jaseir connects your CRM, forms, email, messaging and business tools into reliable workflows that move prospects and customers through the right journey automatically."
+    },
+    {
+      "id": "industries",
+      "title": "Industries",
+      "source": "FAQ",
+      "sourceType": "faq",
+      "keywords": ["industry", "real", "estate", "clinic", "coaching", "institute", "ecommerce", "ca", "firm", "hotel", "business"],
+      "text": "The assistant works well for businesses that answer the same questions every day — real estate, clinics, coaching institutes, ecommerce stores, accounting firms and hotels are common examples."
+    },
+    {
+      "id": "contact",
+      "title": "Contact the Jaseir team",
+      "source": "Website · Contact",
+      "sourceType": "website",
+      "keywords": ["contact", "call", "talk", "meeting", "reach", "email", "phone", "book"],
+      "text": "You can reach the Jaseir team through the contact page at jaseir.com/contact — share what you need and we'll get back to you to plan a demo."
+    }
+  ],
+  "synonyms": {
+    "price": ["prices", "pricing", "cost", "costs", "charge", "charges", "fee", "fees", "rate", "rates", "kitna", "kitne", "kharcha", "paisa", "paise", "budget", "plan", "plans", "rupee", "rupees"],
+    "setup": ["set", "install", "onboarding", "implement", "implementation", "deploy"],
+    "time": ["days", "weeks", "week", "kab", "jaldi", "duration"],
+    "safe": ["safety", "secure", "surakshit", "protected"],
+    "data": ["information", "info"],
+    "whatsapp": ["wa", "watsapp", "whatsap"],
+    "language": ["languages", "bhasha"],
+    "work": ["works", "working", "kaam", "kaise"],
+    "human": ["person", "staff", "executive", "insaan"],
+    "know": ["unknown", "pata"],
+    "chatbot": ["chat", "bot", "chatbots"],
+    "document": ["documents", "pdf", "pdfs", "doc", "docs", "file", "files", "sop", "sops"],
+    "demo": ["trial"],
+    "contact": ["reach"],
+    "service": ["services", "offering", "offerings", "provide"],
+    "rag": ["retrieval"]
+  }
+}

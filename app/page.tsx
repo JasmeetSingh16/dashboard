@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import RagHomeSection from "./components/rag/RagHomeSection";
 
 /* ------------------------------------------------------------------ */
 /* CONTENT                                                            */
@@ -264,23 +265,23 @@ const dotPaths: ConnPath[] = [
 const platformCards = [
   {
     key: "green",
-    title: "Agents",
+    title: "AI Agents",
     description:
-      "Purpose-built AI agents that understand context and act autonomously across your entire information stack.",
+      "Purpose-built AI agents that understand your business context and take action — from lead qualification and SEO planning to content creation and competitor research.",
     type: "agent",
   },
   {
     key: "peach",
     title: "Workflows",
     description:
-      "Repeatable pipelines that move work from idea to execution — structured, connected, and built to scale.",
+      "Repeatable pipelines that connect your tools, automate your processes, and move work from idea to execution — structured, reliable, and built to scale.",
     type: "workflow",
   },
   {
     key: "blue",
-    title: "Jaseir IQ",
+    title: "Business Intelligence",
     description:
-      "Maintain accuracy and context awareness with a knowledge layer trained on your organization's real information.",
+      "Turn your business data into clear insights, opportunities, and recommendations so you can make smarter decisions and take action faster.",
     type: "iq",
   },
 ];
@@ -862,40 +863,36 @@ const agentShowcase = [
       tools: ["Web", "Search", "Content"],
     },
   },
+{
+    name: "AI Booking Agent",
+    label: "BOOKING AUTOMATION",
+    description:
+      "AI-powered scheduling assistant that helps visitors book consultations, manage appointments, and capture leads automatically.",
+    steps: [
+      "Understand visitor intent",
+      "Show available time slots",
+      "Confirm appointments",
+    ],
+    insight: "Booking opportunity found",
+    preview: {
+      input: "Visitor conversation",
+      process: "AI scheduling flow",
+      output: "Confirmed booking",
+      metrics: [
+        ["Response", "Instant"],
+        ["Slots", "45"],
+        ["Bookings", "Ready"],
+      ],
+      tools: ["Groq AI", "Flask", "Calendar"],
+    },
+    url: "https://ai.jaseir.com/ai-booking-agent/",
+  },
+
 ];
 
-function AgentsShowcaseSection() {
-  const [activeAgent, setActiveAgent] = useState(0);
-  const agent = agentShowcase[activeAgent];
-
-  const agentUrls: Record<string, string> = {
-    "AI Lead Qualification": "https://ai.jaseir.com/ai-lead-qualification/",
-    "AI SEO Planner": "https://ai.jaseir.com/ai-planner/",
-    "AI Content Planner": "https://ai.jaseir.com/ai-content-planner/",
-    "AI Conversion Friction Analyzer": "https://ai.jaseir.com/conversion-friction-analyzer/",
-    "AI Competitor Comparison": "https://ai.jaseir.com/ai-competitor-comparison/",
-  };
-
-  const agentIcons = ["people", "chart", "doc", "target", "web"];
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setActiveAgent((current) => (current + 1) % agentShowcase.length);
-    }, 5000);
-
-    return () => window.clearInterval(timer);
-  }, []);
-
-  const openAgent = (name: string) => {
-    const url = agentUrls[name];
-    if (url) window.open(url, "_blank", "noopener,noreferrer");
-  };
-
+function AgentIntroSection() {
   return (
     <>
-      {/* ============================================================= */}
-      {/* AGENT INTRO / HERO                                            */}
-      {/* ============================================================= */}
       <section className="agentlab-intro">
         <div className="agentlab-intro-grid" />
         <div className="agentlab-intro-glow" />
@@ -915,7 +912,7 @@ function AgentsShowcaseSection() {
 
             <p className="agentlab-intro-description">
               Purpose-built AI agents that understand your business, reason
-              through complex work, and take action across the tools your team
+              through complex tasks, and take action across the tools your team
               already uses.
             </p>
 
@@ -924,15 +921,82 @@ function AgentsShowcaseSection() {
               <span>→</span>
             </a>
 
-            <div className="agentlab-proof">
-              <span><b>✓</b> Understand context</span>
-              <span><b>✓</b> Reason through work</span>
-              <span><b>✓</b> Take action</span>
+          </div>
+
+          <div className="agentlab-capabilities">
+            <div className="agentlab-capability">
+              <div className="agentlab-capability-icon">↗</div>
+              <div>
+                <strong>Lead Qualification</strong>
+                <span>Identify and prioritize the leads that matter.</span>
+              </div>
+            </div>
+
+            <div className="agentlab-capability">
+              <div className="agentlab-capability-icon">◈</div>
+              <div>
+                <strong>SEO Intelligence</strong>
+                <span>Turn website data into actionable growth insights.</span>
+              </div>
+            </div>
+
+            <div className="agentlab-capability">
+              <div className="agentlab-capability-icon">✦</div>
+              <div>
+                <strong>Content Operations</strong>
+                <span>Plan and streamline content production.</span>
+              </div>
+            </div>
+
+            <div className="agentlab-capability">
+              <div className="agentlab-capability-icon">⌁</div>
+              <div>
+                <strong>Workflow Automation</strong>
+                <span>Automate repetitive work across your existing tools.</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
+    </>
+  );
+}
+
+function AgentsShowcaseSection() {
+  const [activeAgent, setActiveAgent] = useState(0);
+  const agent = agentShowcase[activeAgent];
+
+  const agentUrls: Record<string, string> = {
+    "AI Lead Qualification": "https://ai.jaseir.com/ai-lead-qualification/",
+    "AI SEO Planner": "https://ai.jaseir.com/ai-planner/",
+    "AI Content Planner": "https://ai.jaseir.com/ai-content-planner/",
+    "AI Conversion Friction Analyzer": "https://ai.jaseir.com/conversion-friction-analyzer/",
+
+    "AI Competitor Comparison": "https://ai.jaseir.com/ai-competitor-comparison/",
+    "AI Booking Agent": "https://ai.jaseir.com/ai-booking-agent/",
+  };
+
+  const agentIcons = ["people", "chart", "doc", "target", "web","calendar"];
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveAgent((current) => (current + 1) % agentShowcase.length);
+    }, 5000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const openAgent = (name: string) => {
+    const url = agentUrls[name];
+    if (url) window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  return (
+    <>
+      {/* ============================================================= */}
+      {/* AGENT INTRO / HERO                                            */}
+      {/* ============================================================= */}
       {/* ============================================================= */}
       {/* SEPARATE FULL AGENT WORKSPACE                                 */}
       {/* ============================================================= */}
@@ -954,9 +1018,9 @@ function AgentsShowcaseSection() {
             </h2>
 
             <p>
-              Explore intelligent agents designed for lead qualification,
-              SEO planning, content strategy, conversion analysis, and
-              competitive research.
+              Explore intelligent AI agents built to handle real business
+              tasks—from qualifying leads and planning SEO to creating content,
+              analyzing conversions, and researching competitors.
             </p>
           </div>
 
@@ -1059,71 +1123,47 @@ function AgentsShowcaseSection() {
                   ))}
                 </div>
 
-                {/* RICH AGENT PREVIEW */}
-                <div className="agentlab-preview">
-                  <div className="agentlab-preview-head">
+                <div className="agentlab-task-panel">
+                  <div className="agentlab-task-panel-head">
                     <div>
-                      <span>LIVE AGENT PREVIEW</span>
-                      <strong>How this agent moves work forward</strong>
-                    </div>
-                    <span className="agentlab-preview-live">
-                      <i /> Running
-                    </span>
-                  </div>
-
-                  <div className="agentlab-preview-flow">
-                    <div className="agentlab-preview-card">
-                      <span className="agentlab-preview-index">INPUT</span>
-                      <strong>{agent.preview.input}</strong>
-                      <small>Context received</small>
+                      <span>AI-POWERED WORKER</span>
+                      <strong>What this agent can do</strong>
                     </div>
 
-                    <span className="agentlab-preview-arrow">→</span>
-
-                    <div className="agentlab-preview-card active">
-                      <span className="agentlab-preview-index">AI PROCESS</span>
-                      <strong>{agent.preview.process}</strong>
-                      <small>Reasoning in progress</small>
-                    </div>
-
-                    <span className="agentlab-preview-arrow">→</span>
-
-                    <div className="agentlab-preview-card">
-                      <span className="agentlab-preview-index">OUTPUT</span>
-                      <strong>{agent.preview.output}</strong>
-                      <small>Ready for action</small>
+                    <div className="agentlab-ready-status">
+                      <i />
+                      Ready to use
                     </div>
                   </div>
 
-                  <div className="agentlab-preview-bottom">
-                    <div className="agentlab-metrics">
-                      {agent.preview.metrics.map(([label, value]) => (
-                        <div key={label}>
-                          <span>{label}</span>
-                          <strong>{value}</strong>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="agentlab-task-list">
+                    {agent.steps.slice(0, 4).map((step, index) => (
+                      <div className="agentlab-task" key={step}>
+                        <span className="agentlab-task-number">
+                          0{index + 1}
+                        </span>
 
-                    <div className="agentlab-tools">
-                      <span>CONNECTED TO</span>
-                      <div>
-                        {agent.preview.tools.map((tool) => (
-                          <b key={tool}>{tool}</b>
-                        ))}
+                        <span className="agentlab-task-name">
+                          {step}
+                        </span>
+
+                        <span className="agentlab-task-check">
+                          ✓
+                        </span>
                       </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
 
-                <button
-                  type="button"
+                <a
+                  href={agentUrls[agent.name]}
                   className="agentlab-open-button"
-                  onClick={() => openAgent(agent.name)}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Open Agent
                   <span>↗</span>
-                </button>
+                </a>
               </div>
             </div>
 
@@ -1163,6 +1203,189 @@ function AgentsShowcaseSection() {
 /* ------------------------------------------------------------------ */
 /* PAGE                                                               */
 /* ------------------------------------------------------------------ */
+
+
+function EcosystemSection() {
+  const intelligenceItems = [
+    ["◉", "Business Data", "Databases, spreadsheets, internal tools"],
+    ["♟", "Customer Data", "Leads, customers, behavior"],
+    ["▤", "Knowledge Base", "Docs, FAQs, SOPs, support content"],
+    ["▣", "Documents", "PDFs, reports, contracts"],
+    ["▥", "Analytics", "Performance, insights, trends"],
+    ["∿", "Real-time Signals", "Website activity, form submissions, events"],
+  ];
+
+  const businessItems = [
+    ["♟", "CRM", "Manage leads and customers"],
+    ["◎", "Website & CMS", "WordPress, Webflow, Wix and more"],
+    ["▣", "Ecommerce", "Shopify, WooCommerce, etc."],
+    ["◒", "Marketing", "Email, ads, campaigns"],
+    ["●", "Communication", "Email, SMS, chat, Slack"],
+    ["▥", "Analytics & Reporting", "GA4, dashboards, data tools"],
+    ["⌘", "Automation Tools", "Zapier, Make, n8n and more"],
+  ];
+
+  const workflowItems = [
+    ["⌕", "Research"],
+    ["▤", "Analyze"],
+    ["⚙", "Take Action"],
+    ["➤", "Follow Up"],
+  ];
+
+  const impactSteps = [
+    ["01", "Connect", "Bring your data and tools together."],
+    ["02", "Analyze", "AI understands context and finds opportunities."],
+    ["03", "Decide", "Plans the best actions for your goals."],
+    ["04", "Execute", "Runs workflows automatically."],
+    ["05", "Measure", "Track results and keep improving."],
+  ];
+
+  return (
+    <section className="ecosystem-section" aria-labelledby="ecosystem-title">
+      <div className="ecosystem-orb ecosystem-orb-left" />
+      <div className="ecosystem-orb ecosystem-orb-right" />
+
+      <div className="ecosystem-container">
+
+        <div className="ecosystem-header">
+          <div className="ecosystem-badge">
+            AI ECOSYSTEM
+          </div>
+
+          <h2 id="ecosystem-title">
+            One ecosystem.{" "}
+            <span>Everything connected.</span>
+          </h2>
+
+          <p>
+            Connect your data, knowledge, business systems, and automation
+            workflows through an intelligent orchestration layer.
+          </p>
+        </div>
+
+        <div className="ecosystem-main">
+
+          <div className="ecosystem-panel ecosystem-panel-left">
+            <div className="ecosystem-panel-heading">
+              <strong>INTELLIGENCE</strong>
+              <span>All your business knowledge, in one place.</span>
+            </div>
+
+            <div className="ecosystem-item-list">
+              {intelligenceItems.map(([icon, title, text]) => (
+                <div className="ecosystem-item" key={title}>
+                  <div className="ecosystem-item-icon">{icon}</div>
+                  <div>
+                    <strong>{title}</strong>
+                    <span>{text}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="ecosystem-center">
+
+            <div className="ecosystem-model">
+              <div className="ecosystem-model-icon">✦</div>
+              <div>
+                <strong>LLMs &amp; AI Models</strong>
+                <span>Reasoning | Planning | Tool Use</span>
+              </div>
+              <b>›</b>
+            </div>
+
+            <div className="ecosystem-core-wrap">
+              <div className="ecosystem-core-ring ecosystem-core-ring-1" />
+              <div className="ecosystem-core-ring ecosystem-core-ring-2" />
+
+              <div className="ecosystem-core">
+                <div className="ecosystem-core-symbol">⌁</div>
+                <strong>AI</strong>
+                <strong>Orchestration</strong>
+                <span>Connect · Understand · Decide · Act</span>
+              </div>
+            </div>
+
+            <div className="ecosystem-workflows">
+              <div className="ecosystem-workflows-title">
+                AUTOMATED WORKFLOWS
+              </div>
+
+              <div className="ecosystem-workflow-grid">
+                {workflowItems.map(([icon, title]) => (
+                  <div className="ecosystem-workflow" key={title}>
+                    <div>{icon}</div>
+                    <span>{title}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+
+          <div className="ecosystem-panel ecosystem-panel-right">
+            <div className="ecosystem-panel-heading">
+              <strong>BUSINESS SYSTEMS</strong>
+              <span>Works with your existing tools and platforms.</span>
+            </div>
+
+            <div className="ecosystem-item-list">
+              {businessItems.map(([icon, title, text]) => (
+                <div className="ecosystem-item" key={title}>
+                  <div className="ecosystem-item-icon">{icon}</div>
+                  <div>
+                    <strong>{title}</strong>
+                    <span>{text}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
+        <div className="ecosystem-impact">
+
+          <div className="ecosystem-impact-intro">
+            <strong>FROM INPUT TO IMPACT</strong>
+            <span>
+              Turn information into
+              measurable results.
+            </span>
+          </div>
+
+          <div className="ecosystem-impact-steps">
+            {impactSteps.map(([number, title, text], index) => (
+              <div className="ecosystem-impact-step" key={number}>
+
+                <div className="ecosystem-impact-icon">
+                  {index === 0 ? "↗" :
+                   index === 1 ? "◈" :
+                   index === 2 ? "ϟ" :
+                   index === 3 ? "▶" : "▥"}
+                </div>
+
+                <div>
+                  <small>{number}</small>
+                  <strong>{title}</strong>
+                  <span>{text}</span>
+                </div>
+
+                {index < impactSteps.length - 1 && (
+                  <b className="ecosystem-impact-arrow">→</b>
+                )}
+
+              </div>
+            ))}
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -1466,9 +1689,9 @@ export default function Home() {
 
           font-size:
             clamp(
-              55px,
-              5.1vw,
-              82px
+              50px,
+              4.6vw,
+              74px
             );
 
           line-height: 0.98;
@@ -1547,6 +1770,11 @@ export default function Home() {
           color: white;
 
           background: #111a3c;
+
+          padding-left: 29px;
+          padding-right: 29px;
+
+          font-weight: 700;
 
           box-shadow:
             0 15px 32px
@@ -2519,7 +2747,7 @@ export default function Home() {
           max-width: 650px;
           color: #101a3d;
           font-family: Georgia, "Times New Roman", serif;
-          font-size: clamp(52px, 5.1vw, 82px);
+          font-size: clamp(48px, 4.6vw, 74px);
           line-height: 0.96;
           letter-spacing: -4px;
           font-weight: 500;
@@ -3125,6 +3353,522 @@ export default function Home() {
           .service-row-arrow { width: 28px; height: 28px; }
           .jaseir-services-visual { min-height: 455px; margin-top: 20px; overflow: hidden; }
           .service-showcase { width: 620px; height: 500px; transform: scale(0.68); transform-origin: center top; margin-top: -5px; }
+        }
+
+        /* ========================================================= */
+        /* AI ECOSYSTEM                                                */
+        /* ========================================================= */
+
+        .ecosystem-section {
+          position: relative;
+          overflow: hidden;
+          padding: 105px 0 90px;
+          color: #f7fbff;
+          background:
+            radial-gradient(circle at 8% 8%, rgba(89, 113, 255, .25), transparent 24%),
+            radial-gradient(circle at 95% 12%, rgba(0, 172, 255, .18), transparent 25%),
+            linear-gradient(135deg, #07172d 0%, #03111f 48%, #061d38 100%);
+        }
+
+        .ecosystem-section::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          opacity: .28;
+          background-image:
+            linear-gradient(rgba(91, 156, 255, .045) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(91, 156, 255, .045) 1px, transparent 1px);
+          background-size: 80px 80px;
+        }
+
+        .ecosystem-container {
+          position: relative;
+          z-index: 2;
+          width: min(1450px, calc(100% - 100px));
+          margin: 0 auto;
+        }
+
+        .ecosystem-orb {
+          position: absolute;
+          width: 500px;
+          height: 500px;
+          border-radius: 50%;
+          filter: blur(80px);
+          pointer-events: none;
+        }
+
+        .ecosystem-orb-left {
+          left: -260px;
+          top: 80px;
+          background: rgba(65, 91, 255, .16);
+        }
+
+        .ecosystem-orb-right {
+          right: -260px;
+          top: 260px;
+          background: rgba(0, 164, 255, .13);
+        }
+
+        .ecosystem-header {
+          max-width: 1000px;
+          margin: 0 auto 34px;
+          text-align: center;
+        }
+
+        .ecosystem-badge {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 34px;
+          padding: 0 20px;
+          border: 1px solid rgba(90, 164, 255, .65);
+          border-radius: 999px;
+          color: #9ec8ff;
+          background: rgba(31, 74, 142, .18);
+          box-shadow: inset 0 0 25px rgba(65, 126, 255, .06);
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: .2em;
+        }
+
+        .ecosystem-header h2 {
+          margin: 20px 0 12px;
+          font-size: clamp(43px, 5vw, 70px);
+          line-height: .98;
+          letter-spacing: -3.5px;
+          font-weight: 800;
+        }
+
+        .ecosystem-header h2 span {
+          background: linear-gradient(90deg, #00d7ff 0%, #5e75ff 45%, #e66be9 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+        }
+
+        .ecosystem-header p {
+          max-width: 850px;
+          margin: 0 auto;
+          color: #a8bdd9;
+          font-size: 17px;
+          line-height: 1.55;
+        }
+
+        .ecosystem-main {
+          position: relative;
+          display: grid;
+          grid-template-columns: 1fr 1.35fr 1fr;
+          align-items: center;
+          gap: 24px;
+          min-height: 585px;
+        }
+
+        .ecosystem-panel {
+          position: relative;
+          padding: 20px;
+          border: 1px solid rgba(75, 144, 228, .38);
+          border-radius: 18px;
+          background: rgba(12, 34, 60, .68);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, .035),
+            0 25px 70px rgba(0, 0, 0, .22);
+          backdrop-filter: blur(16px);
+        }
+
+        .ecosystem-panel-heading {
+          margin-bottom: 13px;
+        }
+
+        .ecosystem-panel-heading strong {
+          display: block;
+          color: #5bc7ff;
+          font-size: 15px;
+          letter-spacing: .04em;
+        }
+
+        .ecosystem-panel-heading span {
+          display: block;
+          margin-top: 6px;
+          color: #a8bdd4;
+          font-size: 13px;
+          line-height: 1.4;
+        }
+
+        .ecosystem-item-list {
+          display: grid;
+          gap: 7px;
+        }
+
+        .ecosystem-item {
+          min-height: 60px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 8px;
+          border: 1px solid rgba(91, 153, 220, .16);
+          border-radius: 11px;
+          background: rgba(20, 48, 78, .65);
+          transition:
+            transform .25s ease,
+            border-color .25s ease,
+            background .25s ease;
+        }
+
+        .ecosystem-item:hover {
+          transform: translateY(-2px);
+          border-color: rgba(73, 191, 255, .45);
+          background: rgba(27, 61, 96, .8);
+        }
+
+        .ecosystem-item-icon {
+          width: 38px;
+          height: 38px;
+          flex: 0 0 38px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid rgba(67, 164, 255, .2);
+          border-radius: 9px;
+          color: #65c8ff;
+          background: rgba(36, 111, 190, .18);
+          font-size: 18px;
+        }
+
+        .ecosystem-item:nth-child(3n + 1) .ecosystem-item-icon {
+          color: #42e0cb;
+        }
+
+        .ecosystem-item:nth-child(3n + 2) .ecosystem-item-icon {
+          color: #75a9ff;
+        }
+
+        .ecosystem-item:nth-child(3n + 3) .ecosystem-item-icon {
+          color: #c47aff;
+        }
+
+        .ecosystem-item strong {
+          display: block;
+          color: #edf6ff;
+          font-size: 12px;
+          line-height: 1.25;
+        }
+
+        .ecosystem-item span {
+          display: block;
+          margin-top: 3px;
+          color: #8ea7c1;
+          font-size: 10px;
+          line-height: 1.3;
+        }
+
+        .ecosystem-center {
+          position: relative;
+          min-height: 585px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .ecosystem-model {
+          position: absolute;
+          top: 8px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: min(330px, 90%);
+          display: flex;
+          align-items: center;
+          gap: 11px;
+          padding: 12px 16px;
+          border: 1px solid rgba(76, 163, 255, .5);
+          border-radius: 999px;
+          background: rgba(16, 43, 76, .72);
+          box-shadow: 0 15px 40px rgba(0, 0, 0, .2);
+        }
+
+        .ecosystem-model::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 100%;
+          width: 1px;
+          height: 70px;
+          background: linear-gradient(#49bfff, transparent);
+        }
+
+        .ecosystem-model-icon {
+          width: 38px;
+          height: 38px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid rgba(87, 154, 255, .3);
+          border-radius: 50%;
+          color: #bda7ff;
+          background: rgba(82, 87, 180, .18);
+          font-size: 20px;
+        }
+
+        .ecosystem-model div:nth-child(2) {
+          flex: 1;
+        }
+
+        .ecosystem-model strong {
+          display: block;
+          color: #edf5ff;
+          font-size: 13px;
+        }
+
+        .ecosystem-model span {
+          display: block;
+          margin-top: 3px;
+          color: #9bb1cb;
+          font-size: 9px;
+        }
+
+        .ecosystem-model > b {
+          color: #91b9e9;
+          font-size: 20px;
+          font-weight: 400;
+        }
+
+        .ecosystem-core-wrap {
+          position: relative;
+          width: 310px;
+          height: 310px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .ecosystem-core-ring {
+          position: absolute;
+          border-radius: 50%;
+          pointer-events: none;
+        }
+
+        .ecosystem-core-ring-1 {
+          inset: -18px;
+          border: 1px solid rgba(53, 165, 255, .35);
+          box-shadow:
+            0 0 35px rgba(42, 148, 255, .18),
+            inset 0 0 35px rgba(42, 148, 255, .08);
+        }
+
+        .ecosystem-core-ring-2 {
+          inset: -42px;
+          border: 1px solid rgba(61, 145, 255, .18);
+        }
+
+        .ecosystem-core {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          border: 2px solid #55c5ff;
+          background:
+            radial-gradient(circle at 50% 40%, rgba(39, 126, 255, .35), transparent 45%),
+            radial-gradient(circle, #092c54 0%, #05172e 68%);
+          box-shadow:
+            0 0 30px rgba(46, 162, 255, .6),
+            0 0 100px rgba(48, 101, 255, .32),
+            inset 0 0 55px rgba(39, 135, 255, .25);
+        }
+
+        .ecosystem-core::before {
+          content: "";
+          position: absolute;
+          inset: 8px;
+          border-radius: 50%;
+          border: 1px solid rgba(90, 192, 255, .32);
+        }
+
+        .ecosystem-core-symbol {
+          color: #58d9ff;
+          font-size: 46px;
+          line-height: 1;
+          margin-bottom: 8px;
+          text-shadow: 0 0 22px rgba(64, 208, 255, .7);
+        }
+
+        .ecosystem-core strong {
+          color: #fff;
+          font-size: 25px;
+          line-height: 1.05;
+          letter-spacing: -1px;
+        }
+
+        .ecosystem-core span {
+          margin-top: 12px;
+          color: #b3c8e2;
+          font-size: 10px;
+          letter-spacing: .02em;
+        }
+
+        .ecosystem-workflows {
+          position: absolute;
+          bottom: 4px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: min(470px, 96%);
+          padding: 13px 16px 11px;
+          border: 1px solid rgba(66, 151, 255, .32);
+          border-radius: 17px;
+          background: rgba(10, 31, 57, .84);
+          box-shadow: 0 20px 50px rgba(0, 0, 0, .24);
+        }
+
+        .ecosystem-workflows::before {
+          content: "";
+          position: absolute;
+          left: 50%;
+          bottom: 100%;
+          width: 1px;
+          height: 42px;
+          background: linear-gradient(transparent, #49bfff);
+        }
+
+        .ecosystem-workflows-title {
+          position: absolute;
+          left: 50%;
+          top: -11px;
+          transform: translateX(-50%);
+          padding: 0 12px;
+          color: #62a9ff;
+          background: #081a31;
+          font-size: 9px;
+          font-weight: 800;
+          letter-spacing: .16em;
+          white-space: nowrap;
+        }
+
+        .ecosystem-workflow-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 8px;
+        }
+
+        .ecosystem-workflow {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 6px;
+          color: #d9e9fb;
+          font-size: 9px;
+          text-align: center;
+        }
+
+        .ecosystem-workflow > div {
+          width: 39px;
+          height: 39px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid rgba(77, 157, 255, .25);
+          border-radius: 11px;
+          color: #63baff;
+          background: rgba(36, 103, 174, .14);
+          font-size: 18px;
+        }
+
+        .ecosystem-impact {
+          display: grid;
+          grid-template-columns: 210px 1fr;
+          align-items: center;
+          gap: 24px;
+          margin-top: 32px;
+          padding: 22px 26px;
+          border: 1px solid rgba(73, 147, 235, .45);
+          border-radius: 20px;
+          background: rgba(11, 32, 58, .68);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, .03),
+            0 25px 70px rgba(0, 0, 0, .22);
+        }
+
+        .ecosystem-impact-intro strong {
+          display: block;
+          color: #6dbbff;
+          font-size: 12px;
+          letter-spacing: .04em;
+        }
+
+        .ecosystem-impact-intro span {
+          display: block;
+          margin-top: 8px;
+          color: #9cb2cb;
+          font-size: 11px;
+          line-height: 1.45;
+        }
+
+        .ecosystem-impact-steps {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 10px;
+        }
+
+        .ecosystem-impact-step {
+          position: relative;
+          min-width: 0;
+          display: flex;
+          align-items: center;
+          gap: 9px;
+        }
+
+        .ecosystem-impact-icon {
+          width: 43px;
+          height: 43px;
+          flex: 0 0 43px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid rgba(72, 150, 255, .35);
+          border-radius: 50%;
+          color: #67baff;
+          background: rgba(35, 91, 157, .18);
+          font-size: 17px;
+        }
+
+        .ecosystem-impact-step:nth-child(3) .ecosystem-impact-icon {
+          color: #38e0c5;
+        }
+
+        .ecosystem-impact-step:nth-child(5) .ecosystem-impact-icon {
+          color: #40dbb5;
+        }
+
+        .ecosystem-impact-step small {
+          display: block;
+          color: #7799bb;
+          font-size: 8px;
+        }
+
+        .ecosystem-impact-step strong {
+          display: block;
+          margin-top: 2px;
+          color: #f2f7ff;
+          font-size: 11px;
+        }
+
+        .ecosystem-impact-step span {
+          display: block;
+          margin-top: 3px;
+          color: #8fa8c2;
+          font-size: 8px;
+          line-height: 1.3;
+        }
+
+        .ecosystem-impact-arrow {
+          position: absolute;
+          right: -5px;
+          color: #7ba8d7;
+          font-size: 18px;
+          font-weight: 400;
         }
 
         /* ========================================================= */
@@ -3902,7 +4646,7 @@ export default function Home() {
 
           color: #101a3d;
 
-          font-size: clamp(38px, 4.6vw, 60px);
+          font-size: clamp(36px, 4.1vw, 54px);
 
           line-height: 1.08;
 
@@ -3953,6 +4697,16 @@ export default function Home() {
             box-shadow 0.2s ease;
         }
 
+        .platform-cta span {
+          margin-left: 8px;
+          font-size: 19px;
+          transition: transform .2s ease;
+        }
+
+        .platform-cta:hover span {
+          transform: translateX(4px);
+        }
+
         .platform-cta:hover {
           transform: translateY(-2px);
 
@@ -3976,7 +4730,7 @@ export default function Home() {
           display: flex;
           flex-direction: column;
 
-          border-radius: 24px;
+          border-radius: 22px;
 
           overflow: hidden;
 
@@ -4851,13 +5605,15 @@ export default function Home() {
           width: min(1500px, calc(100% - 120px));
           min-height: 700px;
           margin: 0 auto;
-          display: flex;
+          padding: 80px 0;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(420px, 520px);
+          gap: 80px;
           align-items: center;
         }
 
         .agentlab-intro-copy {
-          max-width: 900px;
-          padding: 80px 0;
+          max-width: 760px;
         }
 
         .agentlab-eyebrow,
@@ -4890,7 +5646,7 @@ export default function Home() {
         .agentlab-intro-title {
           margin: 34px 0 0;
           max-width: 900px;
-          font-size: clamp(58px, 7vw, 102px);
+          font-size: clamp(48px, 5.5vw, 76px);
           line-height: .94;
           letter-spacing: -5px;
           font-weight: 800;
@@ -4938,23 +5694,67 @@ export default function Home() {
           transform: translateX(4px);
         }
 
-        .agentlab-proof {
+        .agentlab-capabilities {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 14px;
+          width: 100%;
+          max-width: 520px;
+          align-self: center;
+          justify-self: end;
+        }
+
+        .agentlab-capability {
+          min-height: 112px;
+          padding: 17px;
           display: flex;
-          flex-wrap: wrap;
-          gap: 28px;
-          margin-top: 27px;
-          color: rgba(225, 244, 245, .54);
-          font-size: 13px;
+          align-items: flex-start;
+          gap: 14px;
+          border: 1px solid rgba(255, 255, 255, .09);
+          border-radius: 16px;
+          background: rgba(255, 255, 255, .045);
+          backdrop-filter: blur(12px);
+          transition:
+            transform .25s ease,
+            border-color .25s ease,
+            background .25s ease;
         }
 
-        .agentlab-proof span {
-          display: inline-flex;
+        .agentlab-capability:hover {
+          transform: translateY(-3px);
+          border-color: rgba(17, 213, 216, .32);
+          background: rgba(255, 255, 255, .065);
+        }
+
+        .agentlab-capability-icon {
+          flex: 0 0 38px;
+          width: 38px;
+          height: 38px;
+          display: flex;
           align-items: center;
-          gap: 8px;
+          justify-content: center;
+          border-radius: 11px;
+          background: rgba(17, 213, 216, .10);
+          border: 1px solid rgba(17, 213, 216, .20);
+          color: #7de8e9;
+          font-size: 17px;
+          font-weight: 700;
         }
 
-        .agentlab-proof b {
-          color: #10d5d7;
+        .agentlab-capability strong {
+          display: block;
+          margin-bottom: 6px;
+          color: #fff;
+          font-size: 14px;
+          font-weight: 700;
+          letter-spacing: -.2px;
+        }
+
+        .agentlab-capability span {
+          display: block;
+          color: rgba(225, 244, 245, .56);
+          font-size: 12px;
+          line-height: 1.55;
         }
 
         /* FULL SECOND SECTION */
@@ -5303,6 +6103,97 @@ export default function Home() {
           font-size: 11px;
         }
 
+        .agentlab-task-panel {
+          margin-top: 28px;
+          padding: 20px;
+          border: 1px solid rgba(19, 213, 215, .16);
+          border-radius: 16px;
+          background: rgba(0, 25, 28, .52);
+        }
+
+        .agentlab-task-panel-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 20px;
+          margin-bottom: 16px;
+        }
+
+        .agentlab-task-panel-head > div:first-child span {
+          display: block;
+          color: #13d5d7;
+          font-size: 8px;
+          font-weight: 800;
+          letter-spacing: .22em;
+        }
+
+        .agentlab-task-panel-head > div:first-child strong {
+          display: block;
+          margin-top: 6px;
+          color: #e8f7f8;
+          font-size: 14px;
+          font-weight: 700;
+        }
+
+        .agentlab-ready-status {
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
+          padding: 7px 10px;
+          border: 1px solid rgba(19, 213, 215, .16);
+          border-radius: 999px;
+          color: #8fdfe1;
+          background: rgba(19, 213, 215, .06);
+          font-size: 9px;
+          font-weight: 700;
+          white-space: nowrap;
+        }
+
+        .agentlab-ready-status i {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #13d5d7;
+          box-shadow: 0 0 10px rgba(19, 213, 215, .6);
+        }
+
+        .agentlab-task-list {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+
+        .agentlab-task {
+          min-height: 52px;
+          display: flex;
+          align-items: center;
+          gap: 11px;
+          padding: 10px 12px;
+          border: 1px solid rgba(255, 255, 255, .06);
+          border-radius: 10px;
+          background: rgba(255, 255, 255, .025);
+        }
+
+        .agentlab-task-number {
+          color: #4f7779;
+          font-size: 8px;
+          font-weight: 800;
+          letter-spacing: .08em;
+        }
+
+        .agentlab-task-name {
+          flex: 1;
+          color: #c7dddd;
+          font-size: 11px;
+          line-height: 1.35;
+        }
+
+        .agentlab-task-check {
+          color: #13d5d7;
+          font-size: 12px;
+          font-weight: 800;
+        }
+
         .agentlab-open-button {
           display: inline-flex;
           align-items: center;
@@ -5422,8 +6313,18 @@ export default function Home() {
             width: min(100% - 50px, 900px);
           }
 
+          .agentlab-intro-inner {
+            grid-template-columns: 1fr;
+            gap: 45px;
+            padding: 80px 0;
+          }
+
           .agentlab-intro-title {
             font-size: clamp(55px, 8vw, 78px);
+          }
+
+          .agentlab-capabilities {
+            max-width: 700px;
           }
 
           .agentlab-box-body {
@@ -5432,6 +6333,33 @@ export default function Home() {
 
           .agentlab-agent-content {
             padding: 38px 32px 45px;
+          }
+        }
+
+        @media (max-width: 600px) {
+          .agentlab-intro-inner {
+            width: min(100% - 36px, 560px);
+            padding: 65px 0;
+          }
+
+          .agentlab-intro-title {
+            font-size: clamp(48px, 14vw, 68px);
+            letter-spacing: -3px;
+          }
+
+          .agentlab-intro-description {
+            font-size: 17px;
+            line-height: 1.6;
+          }
+
+          .agentlab-capabilities {
+            grid-template-columns: 1fr;
+            gap: 10px;
+          }
+
+          .agentlab-capability {
+            min-height: auto;
+            padding: 17px;
           }
         }
 
@@ -5619,7 +6547,7 @@ export default function Home() {
 
         .agentlab-agent-nav-item.active {
           border-color: #176b6e;
-          background: #0b474a;
+          background: #ffffff;
           color: #f3ffff;
           box-shadow:
             inset 3px 0 0 #13d9dc,
@@ -5645,6 +6573,10 @@ export default function Home() {
           color: inherit;
           font-size: 13px;
           line-height: 1.35;
+        }
+
+        .agentlab-agent-nav-item.active .agentlab-agent-nav-name {
+          color: #07383b;
         }
 
         .agentlab-agent-content {
@@ -6492,7 +7424,7 @@ export default function Home() {
           }
 
           .hero-title {
-            font-size: 58px;
+            font-size: 52px;
             letter-spacing: -3px;
           }
 
@@ -6538,6 +7470,96 @@ export default function Home() {
             transform: scale(0.82);
 
             margin-top: -50px;
+          }
+        }
+
+        @media (max-width: 1050px) {
+          .ecosystem-container {
+            width: min(100% - 50px, 900px);
+          }
+
+          .ecosystem-main {
+            grid-template-columns: 1fr;
+            gap: 25px;
+          }
+
+          .ecosystem-panel {
+            max-width: 700px;
+            width: 100%;
+            margin: 0 auto;
+          }
+
+          .ecosystem-center {
+            min-height: 560px;
+            order: -1;
+          }
+
+          .ecosystem-impact {
+            grid-template-columns: 1fr;
+          }
+
+          .ecosystem-impact-steps {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .ecosystem-impact-arrow {
+            display: none;
+          }
+        }
+
+        @media (max-width: 600px) {
+          .ecosystem-section {
+            padding: 75px 0 65px;
+          }
+
+          .ecosystem-container {
+            width: min(100% - 32px, 560px);
+          }
+
+          .ecosystem-header h2 {
+            font-size: clamp(38px, 11vw, 52px);
+            letter-spacing: -2.5px;
+          }
+
+          .ecosystem-header p {
+            font-size: 15px;
+          }
+
+          .ecosystem-core-wrap {
+            width: 245px;
+            height: 245px;
+          }
+
+          .ecosystem-core strong {
+            font-size: 21px;
+          }
+
+          .ecosystem-core-symbol {
+            font-size: 36px;
+          }
+
+          .ecosystem-core-ring-2 {
+            inset: -25px;
+          }
+
+          .ecosystem-model {
+            width: 92%;
+          }
+
+          .ecosystem-workflows {
+            width: 100%;
+          }
+
+          .ecosystem-workflow-grid {
+            grid-template-columns: repeat(4, 1fr);
+          }
+
+          .ecosystem-impact {
+            padding: 20px;
+          }
+
+          .ecosystem-impact-steps {
+            grid-template-columns: 1fr;
           }
         }
 
@@ -6761,6 +7783,10 @@ export default function Home() {
   AI Agents
 </a>
 
+      <a href="/rag-knowledge-assistant/">
+        RAG AI
+      </a>
+
       <a href="#how-it-works">
         How It Works
       </a>
@@ -6808,26 +7834,24 @@ export default function Home() {
           </div>
 
           <h1 className="hero-title">
-            AI that turns
+            AI Automation &amp; AI Agents That Turn
 
             <span className="gradient-text">
-              information
+              Information
             </span>
 
-            into action.
+            Into Action
           </h1>
 
           <p className="hero-description">
-            Intelligent systems that understand
-            knowledge, context and patterns —
-            transforming complex information
-            into meaningful outcomes.
+            AI-powered systems that qualify leads, automate workflows,
+            improve visibility, and turn your business data into meaningful action.
           </p>
 
           <div className="hero-buttons">
             <a
               className="primary-button"
-              href="#agents"
+              href="#agent-workspace"
             >
               Explore AI
               <span>→</span>
@@ -6851,7 +7875,7 @@ export default function Home() {
                 ✓
               </span>
 
-              More knowledge
+              Less manual work
             </div>
 
             <div className="benefit">
@@ -6859,7 +7883,7 @@ export default function Home() {
                 ✓
               </span>
 
-              Deeper understanding
+              Smarter decisions
             </div>
 
             <div className="benefit">
@@ -6867,7 +7891,7 @@ export default function Home() {
                 ✓
               </span>
 
-              Real impact
+              Real business impact
             </div>
           </div>
         </div>
@@ -7394,6 +8418,14 @@ export default function Home() {
       </section>
 
 
+      <AgentIntroSection />
+
+      {/* ============================================================ */}
+      {/* JASEIR SERVICES — JASPER-STYLE EDITORIAL SHOWCASE           */}
+      {/* ============================================================ */}
+
+      <JaseirServicesSection />
+
       {/* ============================================================ */}
       {/* AI AGENTS — AGENTLAB STYLE SHOWCASE                           */}
       {/* ============================================================ */}
@@ -7418,19 +8450,19 @@ export default function Home() {
           </h2>
 
           <p className="platform-description">
-            Jaseir is the AI workspace built for modern teams. With
-            specialized agents and connected workflows — structured,
-            end-to-end pipelines that turn information into outcomes —
-            Jaseir transforms complexity into clarity, strengthening
-            control and driving measurable results across every part
-            of your business.
+            Jaseir is an AI workspace built for modern businesses, combining
+            specialized AI agents, connected workflows, and intelligent
+            insights to turn information into action. Automate repetitive
+            work, connect your tools, uncover opportunities, and move from
+            data to execution faster.
           </p>
 
           <a
             className="platform-cta"
-            href="#agents"
+            href="#agent-workspace"
           >
             Explore The Platform
+            <span>→</span>
           </a>
         </div>
 
@@ -7459,12 +8491,18 @@ export default function Home() {
       </section>
 
 
+
       {/* ============================================================ */}
-      {/* JASEIR SERVICES — JASPER-STYLE EDITORIAL SHOWCASE           */}
+      {/* RAG AI — links to /rag-knowledge-assistant/                   */}
       {/* ============================================================ */}
 
-      <JaseirServicesSection />
+      <RagHomeSection />
 
+      {/* ============================================================ */}
+      {/* AI ECOSYSTEM                                                  */}
+      {/* ============================================================ */}
+
+      <EcosystemSection />
 
       {/* ============================================================ */}
       {/* TRUSTED BY INNOVATIVE TEAMS (centered, auto-scrolling)       */}

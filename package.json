@@ -6,13 +6,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "ingest": "tsx --conditions=react-server scripts/ingest.ts",
+    "ingest:dry": "tsx --conditions=react-server scripts/ingest.ts --dry-run",
+    "rag:check": "tsx --conditions=react-server scripts/check-keys.ts",
+    "rag:warm": "tsx --conditions=react-server scripts/warm-cache.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.117.1",
     "framer-motion": "^13.3.0",
     "next": "16.3.5",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "server-only": "^0.0.1",
+    "unpdf": "^1.8.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -22,6 +29,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }
