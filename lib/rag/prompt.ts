@@ -33,9 +33,16 @@ export function formatPassages(chunks: RetrievedChunk[]): string {
     .join("\n\n");
 }
 
-export function answerMessages(question: string, chunks: RetrievedChunk[]): ChatMessage[] {
+/** System prompt for an industry demo page (generic sample content, no brand). */
+const sampleBusinessPrompt = (subject: string) =>
+  ANSWER_SYSTEM_PROMPT.replace(
+    "You are the Jaseir Knowledge Assistant, a demo chat on Jaseir's website. You answer questions about Jaseir using ONLY the passages provided with each question.",
+    `You are the customer assistant for ${subject} (sample content in a live demo on Jaseir's website). You answer questions using ONLY the passages provided with each question.`
+  ).replace("connect the person with the Jaseir team", "connect the person with the team");
+
+export function answerMessages(question: string, chunks: RetrievedChunk[], business?: string): ChatMessage[] {
   return [
-    { role: "system", content: ANSWER_SYSTEM_PROMPT },
+    { role: "system", content: business ? sampleBusinessPrompt(business) : ANSWER_SYSTEM_PROMPT },
     {
       role: "user",
       content: `<passages>\n${formatPassages(chunks)}\n</passages>\n\nQuestion: ${escape(question)}`,

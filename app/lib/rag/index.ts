@@ -24,7 +24,7 @@ type StreamEvent =
   | { type: "delta"; text: string }
   | { type: "done"; reply: AssistantReply };
 
-function createHttpAssistant(endpoint: string, handoffUrl: string): KnowledgeAssistant {
+function createHttpAssistant(endpoint: string, handoffUrl: string, tenant: string): KnowledgeAssistant {
   // Per page-view conversation state, so the UI stays unaware of it.
   let conversationId: string | null = null;
   const history: HistoryMessage[] = [];
@@ -38,7 +38,7 @@ function createHttpAssistant(endpoint: string, handoffUrl: string): KnowledgeAss
         response = await fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ question, history: history.slice(-HISTORY_LIMIT), conversationId }),
+          body: JSON.stringify({ question, history: history.slice(-HISTORY_LIMIT), conversationId, tenant }),
           signal,
         });
       } catch (error) {
@@ -63,7 +63,8 @@ function createHttpAssistant(endpoint: string, handoffUrl: string): KnowledgeAss
           if (!line) continue;
           const event = JSON.parse(line) as StreamEvent;
           if (event.type === "start") conversationId = event.conversationId ?? conversationId;
-          else if (event.type === "retrieval") onRetrieval?.({ count: event.count, documents: event.documents, paths: event.paths });
+          else if (event.type === "retrieval")
+            onRetrieval?.({ count: event.count, documents: event.documents, paths: event.paths, top: event.top });
           else if (event.type === "delta") {
             raw += event.text;
             onDelta?.(cleanAnswer(raw, { streaming: true }));
@@ -79,9 +80,10 @@ function createHttpAssistant(endpoint: string, handoffUrl: string): KnowledgeAss
   };
 }
 
-export function getKnowledgeAssistant(handoffUrl: string): KnowledgeAssistant {
+/** `tenant`: "jaseir" (default) or a sample-business demo id. */
+export function getKnowledgeAssistant(handoffUrl: string, tenant = "jaseir"): KnowledgeAssistant {
   if (process.env.NEXT_PUBLIC_RAG_MODE === "local") {
     return createLocalAssistant(knowledgeBase as KnowledgeBase, { handoffUrl });
   }
-  return createHttpAssistant(process.env.NEXT_PUBLIC_RAG_API_URL || "/api/rag/chat/", handoffUrl);
+  return createHttpAssistant(process.env.NEXT_PUBLIC_RAG_API_URL || "/api/rag/chat/", handoffUrl, tenant);
 }

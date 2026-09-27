@@ -59,7 +59,11 @@ export type RetrievalResult = {
 
 export async function retrieve(
   query: string,
-  { tenantSlug = RAG.tenantSlug, topK = RAG.topK, useRerank = RAG.rerankEnabled } = {}
+  {
+    tenantSlug = RAG.tenantSlug as string,
+    topK = RAG.topK as number,
+    useRerank = RAG.rerankEnabled as boolean,
+  }: { tenantSlug?: string; topK?: number; useRerank?: boolean } = {}
 ): Promise<RetrievalResult> {
   const started = performance.now();
   const tenant = await resolveTenantId(tenantSlug);

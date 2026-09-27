@@ -8,16 +8,17 @@ import { db, tenantId } from "./db";
 
 export type KnowledgeSource = { path: string; title: string; label: string; passages: number };
 
-let cache: { at: number; value: KnowledgeSource[] } | null = null;
+const cache = new Map<string, { at: number; value: KnowledgeSource[] }>();
 
 /** Documents of the tenant with their chunk counts (cached for 60 s). */
-export async function listSources(): Promise<KnowledgeSource[]> {
-  if (cache && Date.now() - cache.at < 60_000) return cache.value;
+export async function listSources(tenant: string): Promise<KnowledgeSource[]> {
+  const cached = cache.get(tenant);
+  if (cached && Date.now() - cached.at < 60_000) return cached.value;
 
   const { data, error } = await db()
     .from("documents")
     .select("path, title, chunks(count)")
-    .eq("tenant_id", await tenantId())
+    .eq("tenant_id", await tenantId(tenant))
     .order("path");
   if (error) throw new Error(error.message);
 
@@ -27,6 +28,6 @@ export async function listSources(): Promise<KnowledgeSource[]> {
     label: docLabel(doc.path as string),
     passages: (doc.chunks as { count: number }[] | null)?.[0]?.count ?? 0,
   }));
-  cache = { at: Date.now(), value };
+  cache.set(tenant, { at: Date.now(), value });
   return value;
 }

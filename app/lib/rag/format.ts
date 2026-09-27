@@ -38,7 +38,8 @@ export const hasHandoffMarker = (text: string) => new RegExp(`${OPEN}\\s*HANDOFF
 
 /** Removes citation + handoff markers for display. */
 export function cleanAnswer(text: string, { streaming = false } = {}): string {
-  let out = text.replace(CITATION, "").replace(HANDOFF, " ");
+  // Plain text only: drop markdown bold markers the model sometimes adds.
+  let out = text.replace(CITATION, "").replace(HANDOFF, " ").replace(/\*\*(.+?)\*\*/g, "$1").replace(/__(.+?)__/g, "$1");
   if (streaming) out = out.replace(PARTIAL_MARKER, "");
   return out.replace(/[ \t]+([.,!?;:])/g, "$1").replace(/[ \t]{2,}/g, " ").trim();
 }

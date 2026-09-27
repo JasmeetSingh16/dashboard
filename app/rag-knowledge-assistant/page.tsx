@@ -371,7 +371,7 @@ export default function RagKnowledgeAssistantPage() {
         {/* ============================================================ */}
         {/* 6. INDUSTRIES                                                 */}
         {/* ============================================================ */}
-        <section className="rag-section rag-tight-bottom" aria-labelledby="rag-industries-title">
+        <section className="rag-section rag-tight-bottom" id="industries" aria-labelledby="rag-industries-title">
           <div className="rag-container">
             <SectionHeading
               id="rag-industries-title"

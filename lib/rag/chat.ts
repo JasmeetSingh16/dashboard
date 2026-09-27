@@ -1,5 +1,6 @@
 import "server-only";
 import { ragDemo } from "@/app/data/rag-page";
+import { ragDemos, type DemoId } from "@/app/data/rag-demos";
 import { BOOKING_URL, WHATSAPP_URL } from "@/app/data/site-config";
 import { citedPassages, cleanAnswer, docLabel, hasHandoffMarker } from "@/app/lib/rag/format";
 import type { AssistantReply, SourceRef } from "@/app/lib/rag/types";
@@ -26,12 +27,25 @@ import { retrieve, type RetrievedChunk } from "./retrieve";
  * Every exchange is logged to `messages` (best effort).
  */
 
-export type ChatInput = { question: string; history: HistoryMessage[]; conversationId?: string };
+export type ChatInput = {
+  question: string;
+  history: HistoryMessage[];
+  conversationId?: string;
+  /** Which knowledge base answers: "jaseir" or a sample business demo. */
+  tenant?: DemoId;
+};
 
 export type ChatEvent =
   | { type: "start"; conversationId: string | null }
   // Sent after retrieval, before any answer text — powers the "thinking" steps.
-  | { type: "retrieval"; count: number; documents: string[]; paths: string[] }
+  | {
+      type: "retrieval";
+      count: number;
+      documents: string[];
+      paths: string[];
+      /** Best match, for "Found in {Document › Section}". */
+      top?: { document: string; section: string };
+    }
   | { type: "delta"; text: string }
   | { type: "done"; reply: AssistantReply };
 
@@ -102,7 +116,9 @@ export async function* runChat(input: ChatInput, context: ChatContext): AsyncGen
   const started = performance.now();
   const question = input.question.trim().slice(0, LIMITS.maxQuestionChars);
   const history = input.history.slice(-LLM.historyMessages);
-  const tenant = await tenantId();
+  const tenantSlug: DemoId = input.tenant ?? "jaseir";
+  const demo = ragDemos[tenantSlug];
+  const tenant = await tenantId(tenantSlug);
   const visitor = visitorKey(context.ip);
   const conversationId = await ensureConversation(tenant, visitor, input.conversationId);
   yield { type: "start", conversationId };
@@ -129,9 +145,9 @@ export async function* runChat(input: ChatInput, context: ChatContext): AsyncGen
   };
 
   // 1) Cached preset questions.
-  const cacheable = isCacheable(question, history.length > 0);
+  const cacheable = isCacheable(tenantSlug, question, history.length > 0);
   if (cacheable) {
-    const cached = await getCachedReply(question);
+    const cached = await getCachedReply(tenantSlug, question);
     if (cached) {
       yield await finish(cached, { model: "cache", usedChunkIds: cached.type === "answer" ? cached.sources.map((s) => s.id) : [] });
       return;
@@ -140,7 +156,7 @@ export async function* runChat(input: ChatInput, context: ChatContext): AsyncGen
 
   // 2) Rate limit (fails open if Redis itself is down, so the demo keeps working).
   try {
-    const limit = context.skipRateLimit ? { allowed: true as const } : await checkRateLimit(visitor);
+    const limit = context.skipRateLimit ? { allowed: true as const } : await checkRateLimit(visitor, tenantSlug);
     if (!limit.allowed) {
       const text = limit.window === "hour" ? ragDemo.replies.rateLimitedHour : ragDemo.replies.rateLimitedDay;
       yield await finish(handoff(text, "rate-limited", ragDemo.replies.bookLabel), { model: "rate-limited" });
@@ -180,7 +196,7 @@ export async function* runChat(input: ChatInput, context: ChatContext): AsyncGen
   let chunks: RetrievedChunk[];
   let confidence = 0;
   try {
-    const result = await retrieve(searchQuestion);
+    const result = await retrieve(searchQuestion, { tenantSlug });
     if (result.chunks.length === 0 || result.confidence < RAG.minConfidence) {
       yield await finish(handoff(ragDemo.replies.noAnswer, "no-answer"), {
         model: "handoff:low-confidence",
@@ -198,10 +214,16 @@ export async function* runChat(input: ChatInput, context: ChatContext): AsyncGen
   }
 
   const paths = [...new Set(chunks.map((c) => c.path))];
-  yield { type: "retrieval", count: chunks.length, documents: paths.map(docLabel), paths };
+  yield {
+    type: "retrieval",
+    count: chunks.length,
+    documents: paths.map(docLabel),
+    paths,
+    top: { document: docLabel(chunks[0].path), section: chunks[0].sectionHeading ?? chunks[0].title },
+  };
 
   // 5) Answer: Groq first, Gemini if Groq fails before producing any text.
-  const messages = answerMessages(searchQuestion, chunks);
+  const messages = answerMessages(searchQuestion, chunks, demo.sample ? demo.promptSubject : undefined);
   let raw = "";
   let model = "";
   // The fallback gets one retry: as the last resort, a brief pause beats
@@ -261,6 +283,6 @@ export async function* runChat(input: ChatInput, context: ChatContext): AsyncGen
   const sources = (cited.length ? cited : chunks.slice(0, 1)).map((chunk) => toSourceRef(chunk, text));
 
   const reply: AssistantReply = { type: "answer", text, sources, confidence };
-  if (cacheable) await setCachedReply(question, reply);
+  if (cacheable) await setCachedReply(tenantSlug, question, reply);
   yield await finish(reply, { model, rewritten, usedChunkIds });
 }

@@ -1,3 +1,4 @@
+import { isDemoId } from "@/app/data/rag-demos";
 import { ragDemo } from "@/app/data/rag-page";
 import { BOOKING_URL, WHATSAPP_URL } from "@/app/data/site-config";
 import { runChat, type ChatEvent } from "@/lib/rag/chat";
@@ -8,7 +9,8 @@ import type { HistoryMessage } from "@/lib/rag/prompt";
 /* POST /api/rag/chat — streaming answers (newline-delimited JSON)     */
 /* ------------------------------------------------------------------ */
 /*
- * Request:  { question: string, history?: {role, content}[], conversationId?: string }
+ * Request:  { question: string, history?: {role, content}[], conversationId?: string,
+ *             tenant?: "jaseir" | "saas" | "ecommerce" | "clinic" | "realestate" }
  * Response: one JSON event per line —
  *   {"type":"start","conversationId":"…"}
  *   {"type":"delta","text":"…"}            (0..n, raw model text)
@@ -43,7 +45,7 @@ export async function POST(request: Request) {
   const host = request.headers.get("x-forwarded-host") ?? request.headers.get("host");
   if (origin && host && new URL(origin).host !== host) return bad("Cross-origin requests are not allowed.", 403);
 
-  let body: { question?: unknown; history?: unknown; conversationId?: unknown };
+  let body: { question?: unknown; history?: unknown; conversationId?: unknown; tenant?: unknown };
   try {
     body = await request.json();
   } catch {
@@ -58,14 +60,18 @@ export async function POST(request: Request) {
     question,
     history: parseHistory(body.history),
     conversationId: typeof body.conversationId === "string" ? body.conversationId : undefined,
+    tenant: body.tenant === undefined ? ("jaseir" as const) : body.tenant,
   };
+
+  if (!isDemoId(input.tenant)) return bad("Unknown `tenant`.");
+  const chatInput = { ...input, tenant: input.tenant };
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       const send = (event: ChatEvent) => controller.enqueue(encoder.encode(`${JSON.stringify(event)}\n`));
       try {
-        for await (const event of runChat(input, { ip: clientIp(request), signal: request.signal })) send(event);
+        for await (const event of runChat(chatInput, { ip: clientIp(request), signal: request.signal })) send(event);
       } catch (error) {
         console.error("[rag] chat failed:", error);
         send({

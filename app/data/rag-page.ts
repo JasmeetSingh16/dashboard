@@ -259,6 +259,9 @@ export const ragIndustries = {
   titleHighlight: "answer the same questions daily.",
   text: "Every industry has its own documents, rules and questions. We set up the assistant around yours — and it answers the way your best team member would.",
   cta: "Get a demo for",
+  // Cards with a live sample-business demo (see rag-demos.ts):
+  tryLabel: "Try it live",
+  demoCta: "Get one for your business",
   // Each card: what it answers and a sample Q&A. `docs[match]` is the
   // source shown under the sample answer; `accent` tints the card.
   items: [
@@ -323,15 +326,15 @@ export const ragIndustries = {
       match: 0,
     },
     {
-      id: "agencies",
-      icon: "target",
-      name: "Agencies",
+      id: "salons",
+      icon: "scissors",
+      name: "Salons & spas",
       accent: "#a78bfa",
-      description: "Let prospects and clients self-serve answers on services, process, timelines and pricing.",
-      answers: ["Services & deliverables", "Project process & timelines", "Onboarding & client FAQs"],
-      question: "How long does a website redesign usually take?",
-      answer: "Most redesigns take 6–8 weeks: discovery, design, build and launch. The full timeline is in our process guide.",
-      docs: ["Your process guide"],
+      description: "Answer client questions on services, prices, bookings and aftercare, so your team can focus on clients.",
+      answers: ["Services & prices", "Booking, timings & cancellations", "Aftercare & product advice"],
+      question: "Do I need a patch test before hair colour?",
+      answer: "Yes, a quick patch test 48 hours before your colour appointment. It takes 5 minutes and you can book it online.",
+      docs: ["Your service guide"],
       match: 0,
     },
   ],

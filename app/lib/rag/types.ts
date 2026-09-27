@@ -64,7 +64,13 @@ export type AssistantReply =
     };
 
 /** Sent by the live API right after retrieval, before the answer streams. */
-export type RetrievalInfo = { count: number; documents: string[]; paths: string[] };
+export type RetrievalInfo = {
+  count: number;
+  documents: string[];
+  paths: string[];
+  /** Best match (live API): e.g. { document: "Services", section: "Preparing for a blood sugar test" }. */
+  top?: { document: string; section: string };
+};
 
 export type AskOptions = {
   signal?: AbortSignal;

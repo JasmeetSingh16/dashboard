@@ -18,10 +18,11 @@ export function visitorKey(ip: string): string {
   return createHash("sha256").update(`${salt}:${ip}`).digest("hex").slice(0, 32);
 }
 
-export async function checkRateLimit(visitor: string): Promise<RateLimitResult> {
+/** Limits are counted per tenant (each demo business has its own allowance). */
+export async function checkRateLimit(visitor: string, tenant: string): Promise<RateLimitResult> {
   const now = new Date();
-  const hourKey = `rl:h:${visitor}:${now.toISOString().slice(0, 13)}`; // e.g. 2026-09-25T14
-  const dayKey = `rl:d:${visitor}:${now.toISOString().slice(0, 10)}`; // e.g. 2026-09-25
+  const hourKey = `rl:h:${tenant}:${visitor}:${now.toISOString().slice(0, 13)}`; // e.g. …:2026-09-25T14
+  const dayKey = `rl:d:${tenant}:${visitor}:${now.toISOString().slice(0, 10)}`; // e.g. …:2026-09-25
 
   const [hourCount, , dayCount] = (await redis([
     ["INCR", hourKey],

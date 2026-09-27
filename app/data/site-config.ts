@@ -15,3 +15,7 @@ export const CONTACT_URL = "https://www.jaseir.com/contact/";
 // Where "Book a call" / handoff buttons go. Replace with your Calendly or
 // Cal.com link when you have one.
 export const BOOKING_URL = CONTACT_URL;
+
+// Shown on /privacy/ for data and deletion requests.
+// TODO: replace this placeholder with your real contact email.
+export const PRIVACY_EMAIL = "privacy@example.com";

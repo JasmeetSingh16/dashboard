@@ -626,6 +626,18 @@
   background: rgba(34, 211, 238, 0.08);
 }
 
+/* "Sample content · demo" label (demo pages) */
+.rcp-sample {
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  background: rgba(251, 191, 36, 0.1);
+  color: #fde68a;
+  font-family: var(--rag-mono);
+  font-size: 10.5px;
+  white-space: nowrap;
+}
+
 /* Source cards — the real knowledge documents */
 .rcp-docs {
   display: flex;
@@ -2125,6 +2137,38 @@ html.rcp-locked body {
   transform: translateX(4px);
 }
 
+/* Cards with a live demo: "Try it live" + "Get one for your business" */
+.rag-icard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.rag-icard-actions .rag-icard-cta {
+  margin-top: 0;
+}
+
+.rag-icard-try {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--rag-grad);
+  box-shadow: 0 8px 24px rgba(124, 92, 255, 0.35);
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rag-icard-try:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px rgba(124, 92, 255, 0.5);
+}
+
 .rag-islider-controls {
   display: flex;
   gap: 10px;
@@ -3249,4 +3293,1672 @@ html.rcp-locked body {
 @keyframes rag-line-travel-y {
   from { background-position: 0 -40%, 0 0; }
   to { background-position: 0 140%, 0 0; }
+}
+
+/* ------------------------------------------------------------------ */
+/* INDUSTRY DEMO PAGES — /rag-knowledge-assistant/demo/<industry>/     */
+/* ------------------------------------------------------------------ */
+
+.rdp {
+  --accent: #22d3ee;
+  padding: 22px 0 80px;
+}
+
+.rdp-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.rdp-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--rag-muted);
+  font-size: 14.5px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.rdp-back:hover {
+  color: #fff;
+}
+
+.rdp-get {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.rdp-get:hover {
+  color: #0a0d18;
+  background: #fff;
+}
+
+/*
+ * ≥ 1200px: heading + photo left, chat right.
+ * 768–1199px: one centred column — heading, chat, then the photo.
+ * < 768px: one column, chat full width.
+ */
+.rdp-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 640px);
+  grid-template-areas:
+    "head chat"
+    "side chat";
+  grid-template-rows: auto 1fr;
+  gap: 22px 48px;
+  align-items: start;
+}
+
+.rdp-head {
+  grid-area: head;
+  min-width: 0;
+}
+
+.rdp-side {
+  grid-area: side;
+  min-width: 0;
+}
+
+.rdp-chat {
+  grid-area: chat;
+  min-width: 0;
+}
+
+.rdp-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent);
+  font-family: var(--rag-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.rdp-label-icon {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+/* ~25% smaller than before */
+.rdp-title {
+  margin-top: 14px !important;
+  font-size: clamp(30px, 3.3vw, 45px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.rdp-desc {
+  max-width: 540px;
+  margin-top: 12px !important;
+  color: var(--rag-muted);
+  font-size: 16.5px;
+  line-height: 1.6;
+}
+
+.rdp-note {
+  display: inline-block;
+  margin-top: 12px !important;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  background: rgba(251, 191, 36, 0.08);
+  color: #fde68a;
+  font-family: var(--rag-mono);
+  font-size: 11.5px;
+}
+
+/* ---------- Visual panel: photo ⇄ source viewer ---------- */
+
+.rdp-visual {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 11;
+  border-radius: 22px;
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, transparent);
+  background: #0b1020;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), 0 0 60px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.rdp-photo,
+.rdp-source-layer {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.5s ease, transform 0.6s ease;
+}
+
+.rdp-photo img {
+  object-fit: cover;
+}
+
+.rdp-photo-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(7, 10, 19, 0.15) 0%, rgba(7, 10, 19, 0.35) 45%, rgba(7, 10, 19, 0.82) 100%),
+    radial-gradient(circle at 85% 10%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 55%);
+}
+
+/* No photo yet: a quiet accent gradient (no centered icon). */
+.rdp-placeholder {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 25% 20%, color-mix(in srgb, var(--accent) 55%, transparent), transparent 55%),
+    radial-gradient(circle at 85% 85%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 50%),
+    radial-gradient(circle at 70% 30%, rgba(124, 92, 255, 0.3), transparent 45%),
+    linear-gradient(160deg, #111735, #0a0e1b);
+}
+
+.rdp-source-layer {
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 90% 0%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 50%),
+    #0c1122;
+}
+
+.rdp-visual.is-source .rdp-photo {
+  opacity: 0;
+  transform: scale(1.03);
+}
+
+.rdp-visual.is-source .rdp-source-layer {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+/* Floating question bubbles (glass, slow staggered drift) */
+.rdp-bubbles {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  transition: opacity 0.4s ease;
+}
+
+.rdp-visual.is-source .rdp-bubbles {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rdp-bubble {
+  position: absolute;
+  max-width: 44%;
+  padding: 9px 14px;
+  border-radius: 16px 16px 16px 4px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(12, 16, 31, 0.5);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #f1f3fb;
+  font-size: 13px;
+  line-height: 1.35;
+  text-align: left;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  animation: rdp-drift 9s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -1.7s);
+  transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+}
+
+.rdp-bubble:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--accent) 70%, transparent);
+  background: rgba(12, 16, 31, 0.72);
+}
+
+.rdp-bubble:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Positions in % of the photo; the drift is only a few px, so they stay inside. */
+.rdp-bubble:nth-child(1) { top: 6%; left: 5%; }
+.rdp-bubble:nth-child(2) { top: 20%; right: 5%; border-radius: 16px 16px 4px 16px; }
+.rdp-bubble:nth-child(3) { top: 40%; left: 5%; }
+.rdp-bubble:nth-child(4) { bottom: 30%; right: 5%; border-radius: 16px 16px 4px 16px; }
+.rdp-bubble:nth-child(5) { bottom: 7%; left: 5%; }
+
+/* Source viewer card */
+.rdp-source {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 24px 26px 64px;
+  overflow-y: auto;
+}
+
+.rdp-source-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.rdp-source-kicker {
+  color: var(--accent);
+  font-family: var(--rag-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.rdp-source-tag {
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  background: rgba(52, 211, 153, 0.1);
+  color: var(--rag-ok);
+  font-family: var(--rag-mono);
+  font-size: 10.5px;
+}
+
+.rag-page .rdp-source h3 {
+  margin-top: 16px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.rdp-source-section {
+  margin-top: 4px !important;
+  color: var(--rag-muted);
+  font-size: 14px;
+}
+
+.rdp-source-text {
+  margin-top: 16px !important;
+  padding: 14px 16px;
+  border-left: 2px solid var(--rag-ok);
+  border-radius: 0 12px 12px 0;
+  background: rgba(255, 255, 255, 0.03);
+  color: #b7bfd8;
+  font-size: 14.5px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.rdp-source-text mark {
+  color: #d1fae5;
+  background: rgba(52, 211, 153, 0.22);
+  border-radius: 3px;
+  padding: 1px 3px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.rdp-visual-toggle {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 3;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(7, 10, 19, 0.7);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.rdp-visual-toggle button {
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--rag-muted);
+  font-size: 12.5px;
+  font-weight: 500;
+}
+
+.rdp-visual-toggle button[aria-pressed="true"] {
+  color: #fff;
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* Pulsing dot on "Show source" when a new answer's source is unopened */
+.rdp-visual-toggle button {
+  position: relative;
+}
+
+.rdp-new-dot {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--rag-ok);
+  box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6);
+  animation: rdp-dot-pulse 1.6s ease-out infinite;
+}
+
+@keyframes rdp-dot-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6); }
+  70%, 100% { box-shadow: 0 0 0 7px rgba(52, 211, 153, 0); }
+}
+
+/* On desktop the source opens in the left panel, not under the answer. */
+@media (min-width: 1200px) {
+  .rdp .rcp-passage {
+    display: none;
+  }
+}
+
+.rcp-passage-tag {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  color: var(--rag-ok);
+  font-family: var(--rag-mono);
+  font-size: 10.5px;
+}
+
+.rdp-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 22px !important;
+}
+
+.rdp-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #e6e9f7;
+  font-size: 15.5px;
+  font-weight: 500;
+}
+
+.rdp-list li > span {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+/* Soft accent glow behind the chat */
+.rdp-chat {
+  position: relative;
+}
+
+.rdp-chat::before {
+  content: "";
+  position: absolute;
+  inset: 6% -8% -4%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, color-mix(in srgb, var(--accent) 26%, transparent), transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.rdp-chat .rcp {
+  z-index: 1;
+}
+
+/* Full screen: lift the whole chat layer above the photo bubbles and the header.
+   (.rag-container has z-index 2, so it must be lifted too while expanded.) */
+.rdp-chat .rcp.is-expanded {
+  z-index: 1000;
+}
+
+.rag-container:has(.rcp.is-expanded) {
+  z-index: 1000;
+}
+
+/* ---------- Before / after ---------- */
+
+.rdp-ba {
+  display: grid;
+  gap: 10px;
+  margin-top: 64px;
+  padding: 24px 28px;
+  border-radius: 22px;
+  border: 1px solid var(--rag-border);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+}
+
+.rdp-ba-head,
+.rdp-ba-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+
+.rdp-ba-head span {
+  color: var(--rag-dim);
+  font-family: var(--rag-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.rdp-ba-head span:last-child {
+  color: var(--accent);
+}
+
+.rdp-ba-row {
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.rdp-ba-before {
+  color: #8a91aa;
+  font-size: 15.5px;
+  text-decoration: line-through;
+  text-decoration-color: rgba(248, 113, 113, 0.5);
+}
+
+.rdp-ba-arrow {
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+}
+
+.rdp-ba-after {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #eef1ff;
+  font-size: 15.5px;
+  font-weight: 500;
+}
+
+.rdp-ba-after svg {
+  flex: none;
+  color: var(--rag-ok);
+}
+
+/* ---------- Try another industry ---------- */
+
+.rdp-others {
+  margin-top: 56px;
+}
+
+.rag-page .rdp-others h2 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.rdp-others-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.rdp-other {
+  --accent: #22d3ee;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px 10px 10px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  color: #e6e9f7;
+  font-size: 14.5px;
+  font-weight: 500;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rdp-other:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 65%, transparent);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.rdp-other-icon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.rdp-other-arrow {
+  color: var(--rag-dim);
+}
+
+/* ---------- Bottom CTA ---------- */
+
+.rdp-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 30px;
+  margin-top: 40px;
+  padding: 34px 40px;
+  border-radius: 26px;
+  border: 1px solid rgba(124, 92, 255, 0.28);
+  background:
+    radial-gradient(circle at 85% 50%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 55%),
+    linear-gradient(120deg, #0b0f2e, #141a5c);
+}
+
+.rag-page .rdp-cta h2 {
+  font-size: clamp(24px, 2.6vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+@keyframes rdp-drift {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(6px, -8px); }
+  66% { transform: translate(-5px, 5px); }
+}
+
+/* ---------- Tablet / mobile ---------- */
+
+/* 768–1199px: heading, chat, then the photo — one centred column. */
+@media (max-width: 1199px) {
+  .rdp-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "head"
+      "chat"
+      "side";
+    grid-template-rows: none;
+    gap: 28px;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* The source opens as a sheet under the answer in the chat instead. */
+  .rdp-source-layer,
+  .rdp-visual-toggle {
+    display: none;
+  }
+
+  .rdp-visual.is-source .rdp-photo {
+    opacity: 1;
+    transform: none;
+  }
+
+  .rdp-visual.is-source .rdp-bubbles {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* At most 3 bubbles on the photo */
+  .rdp-bubble:nth-child(n + 4) {
+    display: none;
+  }
+
+  .rdp-bubble:nth-child(3) {
+    top: auto;
+    bottom: 8%;
+  }
+}
+
+/* < 768px: chat full width; no bubbles (the chat's suggestions cover it). */
+@media (max-width: 767px) {
+  .rdp-grid {
+    max-width: none;
+  }
+
+  .rdp-bubbles {
+    display: none;
+  }
+
+  .rdp-visual {
+    aspect-ratio: 16 / 10;
+  }
+}
+
+@media (max-width: 620px) {
+  .rdp {
+    padding: 16px 0 56px;
+  }
+
+  .rdp-topbar {
+    margin-bottom: 20px;
+  }
+
+  .rdp-get {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  .rdp-ba {
+    margin-top: 44px;
+    padding: 18px;
+  }
+
+  .rdp-ba-head {
+    display: none;
+  }
+
+  .rdp-ba-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  .rdp-ba-arrow {
+    display: none;
+  }
+
+  .rdp-ba-before,
+  .rdp-ba-after {
+    font-size: 14.5px;
+  }
+
+  .rdp-others {
+    margin-top: 40px;
+  }
+
+  .rdp-others-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rdp-cta {
+    padding: 24px 20px;
+  }
+
+  .rdp-cta .primary-button {
+    width: 100%;
+  }
+}
+
+/* Reduced motion: no drift, instant photo ⇄ source switches */
+@media (prefers-reduced-motion: reduce) {
+  .rdp-bubble {
+    animation: none;
+  }
+
+  .rdp-photo,
+  .rdp-source-layer,
+  .rdp-bubbles {
+    transition: none;
+  }
+}
+
+/* ================================================================== */
+/* LEAD FORM MODAL ("Get one for your business")                       */
+/* ================================================================== */
+
+/* The triggers are <button>s now; keep their link look. */
+button.rdp-get,
+button.rag-icard-cta {
+  background: transparent;
+}
+
+button.rdp-get:hover,
+button.rag-icard-cta:hover {
+  background: #fff;
+}
+
+.rag-page button.primary-button {
+  border: 0;
+}
+
+.lead-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(3, 5, 12, 0.72);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: lead-fade 0.2s ease both;
+}
+
+.lead-dialog {
+  position: relative;
+  width: min(640px, 100%);
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 34px 34px 30px;
+  border-radius: 24px;
+  border: 1px solid rgba(124, 92, 255, 0.3);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(124, 92, 255, 0.16), transparent 45%),
+    linear-gradient(180deg, #0e1326, #0a0e1b);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), 0 0 60px rgba(124, 92, 255, 0.12);
+  color: var(--rag-text);
+  font-family: var(--rag-body);
+  animation: lead-rise 0.25s ease both;
+}
+
+.rag-page .lead-dialog h2 {
+  margin: 0 36px 8px 0;
+  font-family: var(--rag-head);
+  font-size: clamp(22px, 2.4vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.rag-page .lead-intro {
+  margin: 0 0 22px;
+  color: var(--rag-muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.lead-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--rag-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--rag-muted);
+  font-size: 24px;
+  line-height: 1;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.lead-close:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.lead-form {
+  display: grid;
+  gap: 16px;
+}
+
+.lead-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.lead-field {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.lead-field label {
+  color: #d6dbef;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.lead-req {
+  color: #a78bfa;
+}
+
+.lead-opt {
+  color: var(--rag-dim);
+  font-weight: 400;
+}
+
+.lead-field input,
+.lead-field select,
+.lead-field textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--rag-text);
+  font-size: 15px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lead-field select {
+  appearance: none;
+  padding-right: 38px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23a0a8c3' stroke-width='1.8' stroke-linecap='round'%3E%3Cpath d='m1 1.5 5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
+.lead-field select option {
+  color: #0a0d18;
+}
+
+.lead-field textarea {
+  resize: vertical;
+  min-height: 84px;
+}
+
+.lead-field input::placeholder,
+.lead-field textarea::placeholder {
+  color: var(--rag-dim);
+}
+
+.lead-field input:focus,
+.lead-field select:focus,
+.lead-field textarea:focus {
+  outline: none;
+  border-color: rgba(124, 92, 255, 0.7);
+  box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.22);
+}
+
+.lead-field.has-error input,
+.lead-field.has-error select,
+.lead-field.has-error textarea {
+  border-color: rgba(248, 113, 113, 0.75);
+}
+
+.lead-error,
+.lead-hint {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.lead-error {
+  color: #fca5a5;
+}
+
+.lead-hint {
+  color: var(--rag-dim);
+}
+
+.lead-hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.lead-consent label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #d6dbef;
+  font-size: 14px;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.lead-consent input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  accent-color: #7c5cff;
+}
+
+.lead-consent a {
+  color: #a5b4fc;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.lead-consent .lead-error {
+  margin: 6px 0 0 28px;
+}
+
+.lead-alert {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  background: rgba(248, 113, 113, 0.08);
+  color: #fecaca;
+  font-size: 14px;
+}
+
+.rag-page .lead-submit {
+  justify-self: start;
+  height: 52px;
+  border-radius: 999px;
+}
+
+.rag-page .lead-submit:disabled {
+  opacity: 0.7;
+  cursor: progress;
+  transform: none;
+}
+
+.lead-success {
+  display: grid;
+  justify-items: start;
+  gap: 18px;
+  padding: 10px 0 4px;
+}
+
+.lead-success-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  color: var(--rag-ok);
+  background: rgba(52, 211, 153, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  font-size: 24px;
+}
+
+.rag-page .lead-success .primary-button {
+  height: 50px;
+  border-radius: 999px;
+}
+
+@keyframes lead-fade {
+  from { opacity: 0; }
+}
+
+@keyframes lead-rise {
+  from { opacity: 0; transform: translateY(14px); }
+}
+
+/* Mobile: bottom sheet */
+@media (max-width: 620px) {
+  .lead-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .lead-dialog {
+    width: 100%;
+    max-height: 92dvh;
+    padding: 26px 20px calc(24px + env(safe-area-inset-bottom));
+    border-radius: 22px 22px 0 0;
+    border-bottom: 0;
+    animation-name: lead-sheet;
+  }
+
+  .lead-dialog::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 40px;
+    height: 4px;
+    margin-left: -20px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .lead-close {
+    top: 14px;
+    right: 14px;
+  }
+
+  .lead-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  /* 16px stops iOS from zooming into the field on focus */
+  .lead-field input,
+  .lead-field select,
+  .lead-field textarea {
+    font-size: 16px;
+  }
+
+  .rag-page .lead-submit {
+    justify-self: stretch;
+  }
+}
+
+@keyframes lead-sheet {
+  from { transform: translateY(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lead-overlay,
+  .lead-dialog {
+    animation: none;
+  }
+}
+
+/* ================================================================== */
+/* PRIVACY POLICY PAGE                                                 */
+/* ================================================================== */
+
+.privacy {
+  padding: 56px 0 96px;
+}
+
+.privacy-inner {
+  max-width: 760px;
+}
+
+.privacy-kicker {
+  margin: 0 0 12px;
+  color: var(--rag-cyan);
+  font-family: var(--rag-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.rag-page.privacy h1 {
+  margin: 0 0 18px;
+  font-size: clamp(34px, 4vw, 48px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+.rag-page.privacy h2 {
+  margin: 0 0 12px;
+  font-size: 21px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.privacy-lead {
+  margin: 0 0 36px;
+  color: var(--rag-muted);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.privacy section {
+  padding: 26px 0;
+  border-top: 1px solid var(--rag-border);
+}
+
+.privacy p,
+.privacy li {
+  color: #c9cfe4;
+  font-size: 15.5px;
+  line-height: 1.7;
+}
+
+.privacy p {
+  margin: 0 0 12px;
+}
+
+.privacy ul {
+  margin: 0 0 12px;
+  padding-left: 20px;
+}
+
+.privacy strong {
+  color: var(--rag-text);
+}
+
+.privacy a {
+  color: #a5b4fc;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 620px) {
+  .privacy {
+    padding: 32px 0 64px;
+  }
+}
+
+/* ================================================================== */
+/* LIGHT CHAT PANEL — industry demo pages (.rcp-light)                 */
+/* The page stays dark; only the chat card is light. One accent per    */
+/* industry: --chat-accent (set on .rdp), all ≥ 4.5:1 with white text. */
+/* ================================================================== */
+
+.rcp-light {
+  --c-accent: var(--chat-accent, #4f46e5);
+  --c-text: #0f172a;
+  --c-muted: #475569;
+  --c-line: #e2e8f0;
+  --c-ok: #047857;
+}
+
+.rcp-light .rcp-panel {
+  border: 1px solid #e6e8ef;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+  color: var(--c-text);
+}
+
+/* Header */
+.rcp-light .rcp-head {
+  border-bottom-color: #e6e8ef;
+  background: #fff;
+}
+
+.rcp-light .rcp-bot-icon {
+  background: var(--c-accent);
+  box-shadow: none;
+}
+
+.rcp-light .rcp-head-text strong {
+  color: var(--c-text);
+}
+
+.rcp-light .rcp-head-text small {
+  color: var(--c-muted);
+}
+
+.rcp-light .rcp-head-text small i {
+  background: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.18);
+}
+
+.rcp-light .rcp-head-actions button {
+  border-color: var(--c-line);
+  background: #fff;
+  color: var(--c-muted);
+}
+
+.rcp-light .rcp-head-actions button:hover {
+  border-color: var(--c-accent);
+  background: #fff;
+  color: var(--c-accent);
+}
+
+/* Knowledge tabs */
+.rcp-light .rcp-docs {
+  border-bottom-color: #e6e8ef;
+}
+
+.rcp-light .rcp-doc {
+  border-color: var(--c-line);
+  background: #f8fafc;
+}
+
+.rcp-light .rcp-doc-icon {
+  color: var(--c-accent);
+  background: color-mix(in srgb, var(--c-accent) 10%, #fff);
+}
+
+.rcp-light .rcp-doc-text strong {
+  color: var(--c-text);
+}
+
+.rcp-light .rcp-doc-text small {
+  color: var(--c-muted);
+  font-size: 10.5px;
+}
+
+.rcp-light .rcp-doc.is-searching {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-accent) 16%, transparent);
+}
+
+.rcp-light .rcp-doc.is-cited {
+  border-color: var(--c-accent);
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--c-accent);
+}
+
+.rcp-light .rcp-doc.is-cited .rcp-doc-icon {
+  color: #fff;
+  background: var(--c-accent);
+}
+
+.rcp-light .rcp-doc-check {
+  color: #fff;
+  background: var(--c-accent);
+  box-shadow: 0 0 0 2px #fff;
+}
+
+.rcp-light .rcp-doc.is-loading {
+  background: linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9) 0 0 / 200% 100%;
+}
+
+/* Conversation */
+.rcp-light .rcp-log {
+  scrollbar-color: rgba(15, 23, 42, 0.2) transparent;
+}
+
+.rcp-light .rcp-avatar-bot {
+  background: var(--c-accent);
+  box-shadow: none;
+}
+
+.rcp-light .rcp-avatar-user {
+  border-color: #cbd5e1;
+  background: #f1f5f9;
+  color: var(--c-muted);
+}
+
+.rcp-light .rcp-user-bubble {
+  background: var(--c-accent);
+  box-shadow: none;
+  color: #fff;
+}
+
+.rcp-light .rcp-bot-card {
+  border: 0;
+  border-radius: 4px 18px 18px 18px;
+  background: #f1f5f9;
+  box-shadow: none;
+}
+
+.rcp-light .rcp-text {
+  color: var(--c-text);
+}
+
+.rcp-light .rcp-caret {
+  background: var(--c-accent);
+}
+
+.rcp-light .rcp-sources-label {
+  color: var(--c-muted);
+}
+
+/* Source chips: light teal */
+.rcp-light .rcp-chip {
+  border-color: #a7f3d0;
+  background: #ecfdf5;
+  color: var(--c-ok);
+}
+
+.rcp-light .rcp-chip:hover,
+.rcp-light .rcp-chip.is-open {
+  border-color: #34d399;
+  background: #d1fae5;
+}
+
+.rcp-light .rcp-passage {
+  border-left-color: #10b981;
+  background: #fff;
+}
+
+.rcp-light .rcp-passage cite {
+  color: var(--c-muted);
+}
+
+.rcp-light .rcp-passage p {
+  color: #334155;
+}
+
+.rcp-light .rcp-passage mark {
+  color: #065f46;
+  background: #d1fae5;
+}
+
+.rcp-light .rcp-passage-tag {
+  border-color: #a7f3d0;
+  background: #ecfdf5;
+  color: var(--c-ok);
+}
+
+.rcp-light .rcp-footer {
+  border-top-color: var(--c-line);
+  color: var(--c-muted);
+}
+
+/* "✓ Answered from 1 source · 1.9s" */
+.rcp-answered {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px 3px 8px;
+  border-radius: 999px;
+  border: 1px solid #a7f3d0;
+  background: #ecfdf5;
+  color: #047857;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.rcp-light .rcp-lang {
+  border-color: #c7d2fe;
+  background: #eef2ff;
+  color: #3730a3;
+}
+
+.rcp-light .rcp-rate button {
+  color: var(--c-muted);
+}
+
+.rcp-light .rcp-rate button:hover {
+  color: var(--c-text);
+  background: #e2e8f0;
+}
+
+.rcp-light .rcp-rate button.is-on {
+  border-color: var(--c-accent);
+  background: color-mix(in srgb, var(--c-accent) 8%, #fff);
+  color: var(--c-accent);
+}
+
+/* Thinking steps */
+.rcp-light .rcp-steps {
+  border-color: var(--c-line);
+  background: #f1f5f9;
+  color: var(--c-muted);
+}
+
+.rcp-light .rcp-step-dot {
+  border-color: #94a3b8;
+}
+
+.rcp-light .rcp-steps li.is-active {
+  color: var(--c-text);
+}
+
+.rcp-light .rcp-steps li.is-active .rcp-step-dot {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-accent) 20%, transparent);
+}
+
+.rcp-light .rcp-steps li.is-done {
+  color: var(--c-ok);
+}
+
+.rcp-light .rcp-steps li.is-done .rcp-step-dot {
+  border-color: #10b981;
+  background: #10b981;
+}
+
+/* Handoff card */
+.rcp-light .rcp-handoff {
+  align-items: flex-start;
+  border: 1px solid #fcd34d;
+  border-radius: 4px 18px 18px 18px;
+  background: #fffbeb;
+}
+
+.rcp-light .rcp-handoff-icon {
+  color: #fff;
+  background: #b45309;
+  box-shadow: none;
+}
+
+.rcp-light .rcp-handoff .rcp-handoff-msg {
+  margin: 6px 0 0;
+  color: var(--c-text);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.rcp-light .rcp-handoff-actions .rcp-btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-size: 13.5px;
+}
+
+.rcp-btn-accent {
+  color: #fff;
+  background: var(--c-accent, #4f46e5);
+}
+
+.rcp-light .rcp-btn-wa {
+  color: #052e16;
+  background: #25d366;
+}
+
+/* Suggestions + input */
+.rcp-light .rcp-chips button {
+  border-color: var(--c-line);
+  background: #fff;
+  color: var(--c-text);
+}
+
+.rcp-light .rcp-chips button svg {
+  color: var(--c-accent);
+}
+
+.rcp-light .rcp-chips button:hover:not(:disabled) {
+  border-color: var(--c-accent);
+  background: color-mix(in srgb, var(--c-accent) 6%, #fff);
+}
+
+.rcp-light .rcp-form input {
+  border-color: var(--c-line);
+  background: #fff;
+  color: var(--c-text);
+}
+
+.rcp-light .rcp-form input::placeholder {
+  color: #64748b;
+}
+
+.rcp-light .rcp-form input:focus {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-accent) 18%, transparent);
+}
+
+.rcp-light .rcp-form input:disabled {
+  opacity: 1;
+  background: #f8fafc;
+  color: var(--c-muted);
+}
+
+.rcp-light .rcp-form button {
+  background: var(--c-accent);
+  box-shadow: none;
+}
+
+.rcp-light .rcp-form button:disabled {
+  opacity: 0.4;
+}
+
+.rcp-light .rcp-disclaimer {
+  color: var(--c-muted);
+  font-size: 11px;
+}
+
+.rcp-light .rcp-sample {
+  border-color: #fcd34d;
+  background: #fffbeb;
+  color: #92400e;
+}
+
+/* ---------- Chat size on demo pages ---------- */
+
+.rdp .rcp {
+  width: 100%;
+  min-width: min(360px, 100%);
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* Messages scroll inside; header, tabs, chips and input stay visible. */
+.rdp .rcp-panel {
+  height: 760px;
+  height: clamp(560px, 80vh, 760px);
+}
+
+@media (max-width: 767px) {
+  .rdp .rcp {
+    max-width: none;
+  }
+
+  /* One swipeable row of suggestions, so the messages keep their space. */
+  .rdp .rcp-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .rdp .rcp-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .rdp .rcp-chips button {
+    flex: none;
+    white-space: nowrap;
+  }
+}
+
+/* ---------- Recording mode (?record=1): only the chat, larger ---------- */
+
+.rag-site:has(.rdp-grid.is-record) .nav,
+.rdp:has(.rdp-grid.is-record) .rdp-topbar,
+.rdp:has(.rdp-grid.is-record) .rdp-ba,
+.rdp:has(.rdp-grid.is-record) .rdp-others,
+.rdp:has(.rdp-grid.is-record) .rdp-cta,
+.rdp-grid.is-record .rdp-head,
+.rdp-grid.is-record .rdp-side,
+.rdp-grid.is-record .rcp-disclaimer-text {
+  display: none;
+}
+
+.rdp:has(.rdp-grid.is-record) {
+  padding: 28px 0;
+}
+
+.rdp-grid.is-record {
+  display: block;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.rdp-grid.is-record .rcp {
+  max-width: 760px;
+}
+
+/* ~15% larger text; the height is divided back so it still fits the screen. */
+.rdp-grid.is-record .rcp-panel {
+  zoom: 1.15;
+  height: calc(clamp(560px, 88vh, 900px) / 1.15);
+}
+
+/* ---------- Lead form modal: light theme ---------- */
+
+.lead-overlay {
+  --lead-accent: var(--chat-accent, #4f46e5);
+  z-index: 1100;
+  background: rgba(3, 5, 12, 0.6);
+}
+
+.lead-dialog {
+  border: 1px solid #e6e8ef;
+  background: #fff;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+  color: #0f172a;
+}
+
+.rag-page .lead-dialog h2 {
+  color: #0f172a;
+}
+
+.rag-page .lead-intro {
+  color: #475569;
+}
+
+.lead-close {
+  border-color: #e2e8f0;
+  background: #fff;
+  color: #475569;
+}
+
+.lead-close:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.lead-field label,
+.lead-consent label {
+  color: #0f172a;
+}
+
+.lead-req {
+  color: var(--lead-accent);
+}
+
+.lead-opt {
+  color: #64748b;
+}
+
+.lead-field input,
+.lead-field select,
+.lead-field textarea {
+  border-color: #cbd5e1;
+  background-color: #fff;
+  color: #0f172a;
+}
+
+.lead-field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23475569' stroke-width='1.8' stroke-linecap='round'%3E%3Cpath d='m1 1.5 5 5 5-5'/%3E%3C/svg%3E");
+}
+
+.lead-field input::placeholder,
+.lead-field textarea::placeholder {
+  color: #64748b;
+}
+
+.lead-field input:focus,
+.lead-field select:focus,
+.lead-field textarea:focus {
+  border-color: var(--lead-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--lead-accent) 18%, transparent);
+}
+
+.lead-field.has-error input,
+.lead-field.has-error select,
+.lead-field.has-error textarea {
+  border-color: #dc2626;
+}
+
+.lead-error {
+  color: #b91c1c;
+}
+
+.lead-hint {
+  color: #475569;
+}
+
+.lead-consent input {
+  accent-color: var(--lead-accent);
+}
+
+.lead-consent a {
+  color: var(--lead-accent);
+}
+
+.lead-alert {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.rag-page .lead-dialog .rag-btn-primary {
+  background: var(--lead-accent);
+  box-shadow: none;
+}
+
+.rag-page .lead-dialog .rag-btn-primary:hover {
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--lead-accent) 30%, transparent);
+}
+
+.lead-success-icon {
+  border-color: #a7f3d0;
+  background: #ecfdf5;
+  color: #047857;
+}
+
+@media (max-width: 620px) {
+  .lead-dialog::before {
+    background: rgba(15, 23, 42, 0.18);
+  }
 }

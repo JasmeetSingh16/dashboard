@@ -1,7 +1,9 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
+import { DEMO_BY_INDUSTRY, demoPageUrl } from "@/app/data/rag-demos";
 import { ragIndustries, ragLinks } from "@/app/data/rag-page";
+import LeadButton from "../leads/LeadButton";
 import RagIcon from "./RagIcon";
 import RagSnapDots from "./RagSnapDots";
 
@@ -12,7 +14,7 @@ import RagSnapDots from "./RagSnapDots";
  * a glow and replays its chat.
  */
 export default function RagIndustryCards() {
-  const { items, cta } = ragIndustries;
+  const { items, cta, tryLabel, demoCta } = ragIndustries;
   const [active, setActive] = useState(-1);
   const trackRef = useRef<HTMLDivElement | null>(null);
 
@@ -31,7 +33,9 @@ export default function RagIndustryCards() {
   return (
     <div className="rag-islider">
       <div className="rag-itrack" id="rag-itrack" ref={trackRef}>
-        {items.map((item, index) => (
+        {items.map((item, index) => {
+          const demo = DEMO_BY_INDUSTRY[item.id];
+          return (
           <article
             key={item.id}
             className={`rag-icard ${index === active ? "is-active" : ""}`}
@@ -73,12 +77,27 @@ export default function RagIndustryCards() {
               </div>
             </div>
 
-            <a className="rag-icard-cta" href={ragLinks.contact}>
-              {cta} {item.name}
-              <span aria-hidden="true">›</span>
-            </a>
+            {demo ? (
+              <div className="rag-icard-actions">
+                {/* Opens this industry's demo page and asks the card's question there. */}
+                <a className="rag-icard-try" href={demoPageUrl(demo, item.question)}>
+                  <RagIcon name="sparkle" size={15} />
+                  {tryLabel}
+                </a>
+                <LeadButton className="rag-icard-cta" industry={demo}>
+                  {demoCta}
+                  <span aria-hidden="true">›</span>
+                </LeadButton>
+              </div>
+            ) : (
+              <a className="rag-icard-cta" href={ragLinks.contact}>
+                {cta} {item.name}
+                <span aria-hidden="true">›</span>
+              </a>
+            )}
           </article>
-        ))}
+          );
+        })}
       </div>
 
       <div className="rag-islider-controls">

@@ -10,7 +10,8 @@
     "ingest": "tsx --conditions=react-server scripts/ingest.ts",
     "ingest:dry": "tsx --conditions=react-server scripts/ingest.ts --dry-run",
     "rag:check": "tsx --conditions=react-server scripts/check-keys.ts",
-    "rag:warm": "tsx --conditions=react-server scripts/warm-cache.ts"
+    "rag:warm": "tsx --conditions=react-server scripts/warm-cache.ts",
+    "images:webp": "tsx scripts/industry-images.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.1",

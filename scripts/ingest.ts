@@ -1,10 +1,14 @@
 /* ------------------------------------------------------------------ */
-/* npm run ingest  — /knowledge → chunks → embeddings → Supabase       */
+/* npm run ingest  — knowledge files → chunks → embeddings → Supabase  */
 /* ------------------------------------------------------------------ */
 /*
  * Flags:
- *   --dry-run   parse + chunk only; prints the chunks, no API/DB calls
- *   --force     re-embed every document even if unchanged
+ *   --tenant <name>  jaseir (default), saas, ecommerce, clinic, realestate
+ *   --all            every tenant (knowledge/ + knowledge/demos/<name>/)
+ *   --dry-run        parse + chunk only; prints the chunks, no API/DB calls
+ *   --force          re-embed every document even if unchanged
+ *
+ *   npm run ingest -- --tenant saas     (note the "--" before the flags)
  *
  * Per document: if the content hash and embedding model are unchanged it
  * is skipped, so re-running never re-embeds unchanged files. The run is a
@@ -19,18 +23,30 @@ import path from "node:path";
 
 loadEnvConfig(process.cwd()); // reads .env.local like Next.js does
 
-const args = new Set(process.argv.slice(2));
+const argv = process.argv.slice(2);
+const args = new Set(argv);
 const DRY_RUN = args.has("--dry-run");
 const FORCE = args.has("--force");
 
 async function main() {
+  const { tenantsFromArgs } = await import("./tenant-args");
+  const tenants = tenantsFromArgs(argv);
+  for (const tenant of tenants) {
+    console.log(`\n━━ tenant: ${tenant} ━━`);
+    await ingestTenant(tenant);
+  }
+}
+
+async function ingestTenant(tenantSlug: import("../app/data/rag-demos").DemoId) {
   // Imported after env is loaded.
-  const { EMBEDDING, RAG } = await import("../lib/rag/config");
+  const { EMBEDDING } = await import("../lib/rag/config");
+  const { ragDemos } = await import("../app/data/rag-demos");
   const { embeddingText } = await import("../lib/rag/ingest/chunker");
   const { loadDocument, SUPPORTED_EXTENSIONS } = await import("../lib/rag/ingest/load");
 
+  const demo = ragDemos[tenantSlug];
   const root = process.cwd();
-  const dir = path.join(root, RAG.knowledgeDir);
+  const dir = path.join(root, demo.dir);
   const files = (await readdir(dir))
     .filter((file) => SUPPORTED_EXTENSIONS.includes(path.extname(file).toLowerCase()))
     .sort()
@@ -47,20 +63,30 @@ async function main() {
       }
     }
     const total = docs.reduce((sum, d) => sum + d.chunks.length, 0);
-    console.log(`\nDry run: ${docs.length} documents, ${total} chunks. Nothing was embedded or saved.`);
+    console.log(`\nDry run (${tenantSlug}): ${docs.length} documents, ${total} chunks. Nothing was embedded or saved.`);
     return;
   }
 
   const { db, tenantId } = await import("../lib/rag/db");
   const { embedPassages } = await import("../lib/rag/providers/embeddings");
 
-  const tenant = await tenantId();
   const supabase = db();
+
+  // Demo tenants are created on first ingest.
+  const { error: tenantError } = await supabase
+    .from("tenants")
+    .upsert(
+      // Keeps the stored name in sync with rag-demos.ts (generic names, no brands).
+      { slug: tenantSlug, name: demo.tenantName },
+      { onConflict: "slug" }
+    );
+  if (tenantError) throw new Error(`Could not create tenant ${tenantSlug}: ${tenantError.message}`);
+  const tenant = await tenantId(tenantSlug);
 
   const { data: source, error: sourceError } = await supabase
     .from("sources")
     .upsert(
-      { tenant_id: tenant, kind: "folder", name: RAG.knowledgeDir, uri: `${RAG.knowledgeDir}/` },
+      { tenant_id: tenant, kind: "folder", name: demo.dir, uri: `${demo.dir}/` },
       { onConflict: "tenant_id,name" }
     )
     .select("id")
@@ -167,7 +193,7 @@ async function main() {
   }
 
   console.log(
-    `\nDone. Embedded ${stats.embedded}, skipped ${stats.skipped}, removed ${stats.removed} documents; ` +
+    `\nDone (${tenantSlug}). Embedded ${stats.embedded}, skipped ${stats.skipped}, removed ${stats.removed} documents; ` +
       `${stats.chunks} chunks embedded in ${stats.apiCalls} API calls (${EMBEDDING.model}).`
   );
 }

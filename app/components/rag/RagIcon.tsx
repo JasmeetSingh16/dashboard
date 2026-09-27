@@ -51,6 +51,13 @@ const paths: Record<string, React.ReactNode> = {
   ),
   send: <path d="M4 12 20 4l-5 16-3.5-6.5L4 12Z" />,
   bolt: <path d="M13 3 5 13.5h5.3L11 21l8-10.8h-5.3L13 3Z" />,
+  scissors: (
+    <>
+      <circle cx="6.5" cy="6.5" r="2.8" />
+      <circle cx="6.5" cy="17.5" r="2.8" />
+      <path d="M8.6 8.4 20 18.5M8.6 15.6 20 5.5M13.2 12h.01" />
+    </>
+  ),
   lock: (
     <>
       <rect x="5" y="10.5" width="14" height="10" rx="2.5" />

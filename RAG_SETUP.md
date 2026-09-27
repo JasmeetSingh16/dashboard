@@ -85,6 +85,35 @@ npm run ingest       # embeds + saves
 npm run rag:warm     # pre-answers the preset chat questions (run after every ingest)
 ```
 
+### Industry demo pages
+
+Besides Jaseir's own knowledge (`knowledge/*.md`, tenant `jaseir`, the main chat), each industry
+has its own demo page with generic sample content (no brand names), locked to one tenant:
+
+| Page | Assistant | Knowledge folder |
+|---|---|---|
+| `/rag-knowledge-assistant/demo/saas/` | SaaS Support Assistant | `knowledge/demos/saas/` |
+| `/rag-knowledge-assistant/demo/ecommerce/` | Online Store Assistant | `knowledge/demos/ecommerce/` |
+| `/rag-knowledge-assistant/demo/clinic/` | Clinic Assistant | `knowledge/demos/clinic/` |
+| `/rag-knowledge-assistant/demo/realestate/` | Real Estate Assistant | `knowledge/demos/realestate/` |
+| `/rag-knowledge-assistant/demo/legal/` | Law & Accounting Assistant | `knowledge/demos/legal/` |
+| `/rag-knowledge-assistant/demo/salon/` | Salon Assistant | `knowledge/demos/salon/` |
+
+Titles, welcome texts and starter questions live in `app/data/rag-demos.ts`. The industry cards'
+"Try it live" links open these pages with `?q=<card question>` (only preset, cached questions are
+sent automatically). Demo pages are `noindex`. Rate limits and the answer cache are per tenant.
+
+Photos: put `saas-1.jpg`, `ecommerce-1.jpg`, `clinic-1.jpg`, `realestate-1.jpg`,
+`legal-1.jpg`, `salon-1.jpg` in
+`public/images/industries/` and run `npm run images:webp`. Without a photo the page shows a
+gradient placeholder.
+
+```bash
+npm run ingest -- --tenant saas   # one tenant (default without a flag: jaseir)
+npm run ingest -- --all           # every tenant
+npm run rag:warm -- --all         # pre-answer every tenant's preset questions
+```
+
 `rag:warm` answers the auto-played question, starter chips and follow-ups once and caches
 them, so visitors clicking them never trigger an AI call. It warns if a preset question
 can't be answered from the knowledge base.

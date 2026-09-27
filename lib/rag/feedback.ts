@@ -10,8 +10,8 @@ import { db, tenantId } from "./db";
  * people's messages. One rating per message: a new vote replaces the old.
  */
 
-export async function saveFeedback(messageId: string, rating: 1 | -1, visitor: string): Promise<boolean> {
-  const tenant = await tenantId();
+export async function saveFeedback(tenantSlug: string, messageId: string, rating: 1 | -1, visitor: string): Promise<boolean> {
+  const tenant = await tenantId(tenantSlug);
 
   const { data: message } = await db()
     .from("messages")

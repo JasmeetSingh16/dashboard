@@ -1,5 +1,5 @@
 import "server-only";
-import { ragDemo } from "@/app/data/rag-page";
+import { DEMO_IDS, presetQuestions, type DemoId } from "@/app/data/rag-demos";
 import type { AssistantReply } from "@/app/lib/rag/types";
 import { CACHE } from "./config";
 import { db, tenantId } from "./db";
@@ -9,9 +9,9 @@ import { redis } from "./redis";
 /* ANSWER CACHE for the preset demo questions                          */
 /* ------------------------------------------------------------------ */
 /*
- * Only the questions shown as buttons (suggestions, follow-ups and the
- * auto-played question) are cached, and only when asked without chat
- * history. A repeat costs no LLM call and no rate-limit slot.
+ * Only the questions shown as buttons (per tenant: suggestions, follow-ups,
+ * the auto-played question and the industry card question) are cached, and
+ * only when asked without chat history. A repeat costs no LLM call and no rate-limit slot.
  *
  * The key includes a "knowledge version" (latest document update), so
  * re-running `npm run ingest` automatically invalidates old answers.
@@ -19,38 +19,39 @@ import { redis } from "./redis";
 
 const normalize = (q: string) => q.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 
-const CACHEABLE = new Set(
-  [ragDemo.autoplayQuestion, ...ragDemo.suggestions.map((s) => s.text), ...ragDemo.followUps].map(normalize)
+const cacheable = new Map<DemoId, Set<string>>(
+  DEMO_IDS.map((id) => [id, new Set(presetQuestions(id).map(normalize))])
 );
 
-/** Every preset question shown in the UI (used by scripts/warm-cache.ts). */
-export const PRESET_QUESTIONS = [
-  ...new Set([ragDemo.autoplayQuestion, ...ragDemo.suggestions.map((s) => s.text), ...ragDemo.followUps]),
-];
+/** Every preset question of a tenant (used by scripts/warm-cache.ts). */
+export const presetQuestionsFor = (tenant: DemoId) => presetQuestions(tenant);
 
-export const isCacheable = (question: string, hasHistory: boolean) =>
-  !hasHistory && CACHEABLE.has(normalize(question));
+export const isCacheable = (tenant: DemoId, question: string, hasHistory: boolean) =>
+  !hasHistory && Boolean(cacheable.get(tenant)?.has(normalize(question)));
 
-let version: { value: string; at: number } | null = null;
+const versions = new Map<DemoId, { value: string; at: number }>();
 
 /** Latest document update for the tenant, refreshed at most once a minute. */
-async function knowledgeVersion(): Promise<string> {
-  if (version && Date.now() - version.at < 60_000) return version.value;
+async function knowledgeVersion(tenant: DemoId): Promise<string> {
+  const cached = versions.get(tenant);
+  if (cached && Date.now() - cached.at < 60_000) return cached.value;
   const { data } = await db()
     .from("documents")
     .select("updated_at")
-    .eq("tenant_id", await tenantId())
+    .eq("tenant_id", await tenantId(tenant))
     .order("updated_at", { ascending: false })
     .limit(1);
-  version = { value: data?.[0]?.updated_at ?? "none", at: Date.now() };
-  return version.value;
+  const value = data?.[0]?.updated_at ?? "none";
+  versions.set(tenant, { value, at: Date.now() });
+  return value;
 }
 
-const cacheKey = async (question: string) => `rag:answer:${await knowledgeVersion()}:${normalize(question)}`;
+const cacheKey = async (tenant: DemoId, question: string) =>
+  `rag:answer:${tenant}:${await knowledgeVersion(tenant)}:${normalize(question)}`;
 
-export async function getCachedReply(question: string): Promise<AssistantReply | null> {
+export async function getCachedReply(tenant: DemoId, question: string): Promise<AssistantReply | null> {
   try {
-    const [raw] = await redis([["GET", await cacheKey(question)]]);
+    const [raw] = await redis([["GET", await cacheKey(tenant, question)]]);
     return typeof raw === "string" ? (JSON.parse(raw) as AssistantReply) : null;
   } catch (error) {
     console.warn("[rag] cache read failed:", error);
@@ -58,11 +59,11 @@ export async function getCachedReply(question: string): Promise<AssistantReply |
   }
 }
 
-export async function setCachedReply(question: string, reply: AssistantReply): Promise<void> {
+export async function setCachedReply(tenant: DemoId, question: string, reply: AssistantReply): Promise<void> {
   // Only cache real answers — never handoffs or errors.
   if (reply.type !== "answer") return;
   try {
-    await redis([["SET", await cacheKey(question), JSON.stringify(reply), "EX", CACHE.ttlSeconds]]);
+    await redis([["SET", await cacheKey(tenant, question), JSON.stringify(reply), "EX", CACHE.ttlSeconds]]);
   } catch (error) {
     console.warn("[rag] cache write failed:", error);
   }
