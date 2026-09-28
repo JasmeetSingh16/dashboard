@@ -50,22 +50,42 @@ export function toLead(input: LeadInput, sourcePage: string | null): Lead {
   };
 }
 
+/** "column does not exist" — migration 0003 (form columns) hasn't been run yet. */
+const isMissingColumn = (error: { code?: string; message: string }) =>
+  error.code === "PGRST204" || error.code === "42703" || /column .* (does not exist|in the schema cache)/i.test(error.message);
+
 export async function saveLead(lead: Lead): Promise<void> {
+  const consentedAt = new Date().toISOString();
+  const base = { tenant_id: await tenantId("jaseir"), name: lead.name, email: lead.email, phone: lead.phone };
+
   const { error } = await db()
     .from("leads")
     .insert({
-      tenant_id: await tenantId("jaseir"),
-      name: lead.name,
-      email: lead.email,
+      ...base,
       company: lead.company,
       website: lead.website,
       industry: lead.industry,
-      phone: lead.phone,
       message: lead.message,
       source_page: lead.sourcePage,
-      consented_at: new Date().toISOString(),
+      consented_at: consentedAt,
     });
-  if (error) throw new Error(error.message);
+  if (!error) return;
+  if (!isMissingColumn(error)) throw new Error(error.message);
+
+  // Fallback until supabase/migrations/0003_leads_form.sql is run: keep every
+  // detail by folding the new fields into `message` (the 0001 columns only).
+  console.warn("[leads] form columns missing — run supabase/migrations/0003_leads_form.sql. Saving details in `message`.");
+  const details = [
+    `Company: ${lead.company}`,
+    `Website: ${lead.website ?? "—"}`,
+    `Industry: ${lead.industry}`,
+    `Page: ${lead.sourcePage ?? "—"}`,
+    `Consented at: ${consentedAt}`,
+    "",
+    lead.message ?? "",
+  ].join("\n").trim();
+  const retry = await db().from("leads").insert({ ...base, message: details });
+  if (retry.error) throw new Error(retry.error.message);
 }
 
 export const emailConfigured = () => Boolean(process.env.RESEND_API_KEY && process.env.LEAD_NOTIFY_EMAIL);
