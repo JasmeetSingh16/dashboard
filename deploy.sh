@@ -40,7 +40,11 @@ main() {
   local GH_USER="JasmeetSingh16"
   local LIVE="https://ai.jaseir.com"
 
-  umask 077
+  # Normal permissions for everything the deploy writes into the apps
+  # (nginx must be able to read static files). Only the log and backups
+  # below are made private.
+  umask 022
+  (umask 077; : >"$LOG")
   exec > >(tee -a "$LOG") 2>&1
 
   # app key | repo name | kind | live path
@@ -271,8 +275,8 @@ let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
   local found=()
   for i in "${!APPS[@]}"; do [ -n "${DIR[$i]}" ] && found+=("${DIR[$i]}"); done
   if [ "${#found[@]}" -gt 0 ]; then
-    if tar --exclude='node_modules' --exclude='.next' --exclude='venv' --exclude='*.deploy-backup' \
-      -czf "$BACKUP" "${found[@]}" 2>/dev/null; then
+    if (umask 077; tar --exclude='node_modules' --exclude='.next' --exclude='venv' --exclude='*.deploy-backup' \
+      -czf "$BACKUP" "${found[@]}" 2>/dev/null); then
       ok "Backup written: $BACKUP ($(du -h "$BACKUP" | cut -f1))"
     else
       bad "Backup failed. Stopping before any change is made."
@@ -285,7 +289,7 @@ let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
     [ "$(cut -d'|' -f3 <<<"${APPS[$i]}")" = flask ] && [ -n "${DIR[$i]}" ] && BOOK_IDX="$i"
   done
   if [ -n "$BOOK_IDX" ]; then
-    mkdir -p "$BOOKING_BACKUP_DIR"
+    (umask 077; mkdir -p "$BOOKING_BACKUP_DIR")
     local f
     for f in bookings.json leads.json; do
       if [ -f "${DIR[$BOOK_IDX]}/$f" ]; then
@@ -326,6 +330,16 @@ let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
     esac
   }
 
+  # Make app files readable by other users (e.g. nginx serving /static),
+  # except secrets and runtime data. Repairs files written by the first
+  # version of this script, which used a private umask.
+  fix_perms() { # dir
+    find "$1" \( -name node_modules -o -name .next -o -name venv -o -name .git -o -name __pycache__ \) -prune -o \
+      \( -name '.env*' -o -name bookings.json -o -name leads.json \) -prune -o \
+      -exec chmod u+rwX,go+rX {} + 2>/dev/null
+    chmod go+rX "$1" 2>/dev/null
+  }
+
   # Stash local edits only to files the update changes; everything else
   # (e.g. server-only tweaks, .env files) is left exactly as it is.
   stash_conflicts() { # dir owner
@@ -356,6 +370,7 @@ let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
     stash_conflicts "$d" "$o"
     if g "$d" "$o" pull --ff-only origin main; then
       S_PULL[$i]="✅"; ok "Pulled $(g "$d" "$o" rev-parse --short HEAD)"
+      fix_perms "$d"
     else
       bad "git pull failed (see above). Old version left untouched."
       S_PULL[$i]="❌"; continue
