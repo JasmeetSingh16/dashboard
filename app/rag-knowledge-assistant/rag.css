@@ -4812,7 +4812,8 @@ button.rag-icard-cta:hover {
 
 /* ---------- Recording mode (?record=1): only the chat, larger ---------- */
 
-.rag-site:has(.rdp-grid.is-record) .nav,
+body:has(.rdp-grid.is-record) .jk-header,
+body:has(.rdp-grid.is-record) .jk-footer,
 .rdp:has(.rdp-grid.is-record) .rdp-topbar,
 .rdp:has(.rdp-grid.is-record) .rdp-ba,
 .rdp:has(.rdp-grid.is-record) .rdp-others,
@@ -4961,4 +4962,75 @@ button.rag-icard-cta:hover {
   .lead-dialog::before {
     background: rgba(15, 23, 42, 0.18);
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* Shared Jaseir kit on this dark page (agent identity + related       */
+/* agents). Colours come from --agent-* set from lib/agents.ts.        */
+/* ------------------------------------------------------------------ */
+
+.rag-kicker .jk-hero-name {
+  color: #fff;
+}
+
+.rag-kicker .jk-hero-category {
+  color: var(--agent-accent-bright);
+}
+
+/* This page ends with its own CTA, so skip the footer's generic band. */
+body:has(.rag-final) .jk-cta-band {
+  display: none;
+}
+
+.rag-related .jk-section--surface {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: var(--rag-bg-alt);
+}
+
+.rag-related .jk-eyebrow {
+  color: var(--agent-accent-bright);
+}
+
+.rag-related .jk-h2 {
+  color: #fff;
+  font-family: var(--rag-head);
+}
+
+.rag-related .jk-related-card {
+  border-color: rgba(255, 255, 255, 0.08);
+  border-top-color: var(--agent-accent-bright);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.rag-related .jk-related-card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  border-top-color: var(--agent-accent-bright);
+}
+
+.rag-related .jk-agent-badge {
+  border-color: rgb(var(--agent-accent-bright-rgb) / 0.35);
+  background: rgb(var(--agent-accent-bright-rgb) / 0.12);
+  color: var(--agent-accent-bright);
+}
+
+.rag-related .jk-related-category,
+.rag-related .jk-related-open {
+  color: var(--agent-accent-bright);
+}
+
+.rag-related .jk-related-name {
+  color: #fff;
+}
+
+.rag-related .jk-related-tagline {
+  color: var(--rag-muted);
+}
+
+.rag-related a:focus-visible {
+  outline-color: var(--agent-accent-bright);
+}
+
+/* .rag-page resets list margins; restore the kit's spacing here. */
+.rag-related .jk-related {
+  margin-top: 40px;
 }

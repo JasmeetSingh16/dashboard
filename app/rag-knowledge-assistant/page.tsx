@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
-import SiteHeader from "../components/SiteHeader";
 import RagChatPanel from "../components/rag/RagChatPanel";
 import RagIcon from "../components/rag/RagIcon";
 import RagIndustryCards from "../components/rag/RagIndustryCards";
@@ -24,6 +23,11 @@ import {
   
 } from "../data/rag-page";
 import "./rag.css";
+import AgentIcon from "../../components/agent/AgentIcon";
+import { RelatedAgents } from "../../components/agent/AgentTemplate";
+import { agentVars, getAgent } from "../../lib/agents";
+
+const agent = getAgent("rag-assistant");
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-rag-head", display: "swap" });
 const inter = Inter({ subsets: ["latin"], variable: "--font-rag-body", display: "swap" });
@@ -132,11 +136,12 @@ function SectionHeading({
 
 export default function RagKnowledgeAssistantPage() {
   return (
-    <div className={`site rag-site ${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+    <div
+      className={`site rag-site ${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      style={agentVars(agent)}
+    >
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(serviceJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(faqJsonLd) }} />
-
-      <SiteHeader active="rag" theme="dark" />
 
       <main className="rag-page rag-motion">
         <RagReveal />
@@ -149,10 +154,15 @@ export default function RagKnowledgeAssistantPage() {
 
           <div className="rag-container rag-hero-grid">
             <div className="rag-hero-copy">
-              <div className="rag-badge">
-                <RagIcon name="sparkle" size={14} />
-                {ragHero.badge}
-              </div>
+              <p className="jk-hero-kicker rag-kicker">
+                <span className="jk-hero-badge">
+                  <AgentIcon name={agent.icon} size={22} />
+                </span>
+                <span>
+                  <span className="jk-hero-name">{agent.name}</span>
+                  <span className="jk-hero-category">{agent.category}</span>
+                </span>
+              </p>
 
               <h1 id="rag-hero-title" className="rag-hero-title">
                 <span className="rag-glow-word">{ragHero.titleHighlight}</span> {ragHero.titleAfter}
@@ -555,6 +565,10 @@ export default function RagKnowledgeAssistantPage() {
             </div>
           </div>
         </section>
+
+        <div className="rag-related">
+          <RelatedAgents slug="rag-assistant" zone={{ kind: "hub" }} />
+        </div>
       </main>
     </div>
   );

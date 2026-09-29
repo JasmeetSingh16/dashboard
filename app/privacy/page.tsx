@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
-import SiteHeader from "../components/SiteHeader";
 import { PRIVACY_EMAIL } from "../data/site-config";
 import "../rag-knowledge-assistant/rag.css";
 
@@ -13,7 +12,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-rag-body", display: 
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-rag-mono", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Jaseir",
+  title: "Privacy Policy",
   description: "What the Jaseir demo request form and RAG chat assistant collect, why, how long it is kept, and how to ask for deletion.",
 };
 
@@ -24,8 +23,6 @@ export default function PrivacyPage() {
 
   return (
     <div className={`site rag-site ${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
-      <SiteHeader theme="dark" />
-
       <main className="rag-page privacy">
         <div className="rag-container privacy-inner">
           <p className="privacy-kicker">Last updated {UPDATED}</p>

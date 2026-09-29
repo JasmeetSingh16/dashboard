@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import HeroAiCore from "./components/hero/HeroAiCore";
 import RagHomeSection from "./components/rag/RagHomeSection";
+import AgentIcon from "../components/agent/AgentIcon";
+import { agentVars, getAgent, type AgentSlug } from "../lib/agents";
+import { agentHref } from "../lib/site";
 
 /* ------------------------------------------------------------------ */
 /* ICONS                                                              */
@@ -605,6 +608,15 @@ function JaseirServicesSection() {
 /* ------------------------------------------------------------------ */
 /* AI AGENTS — AGENTLAB STYLE SHOWCASE                                */
 /* ------------------------------------------------------------------ */
+const showcaseSlugs: Record<string, AgentSlug> = {
+  "AI Lead Qualification": "lead-qualification",
+  "AI SEO Planner": "seo-planner",
+  "AI Content Planner": "content-planner",
+  "AI Conversion Friction Analyzer": "conversion-friction",
+  "AI Competitor Comparison": "competitor-comparison",
+  "AI Booking Agent": "booking-agent",
+};
+
 const agentShowcase = [
   {
     name: "AI Lead Qualification",
@@ -743,7 +755,6 @@ const agentShowcase = [
       ],
       tools: ["Groq AI", "Flask", "Calendar"],
     },
-    url: "https://ai.jaseir.com/ai-booking-agent/",
   },
 
 ];
@@ -825,17 +836,9 @@ function AgentsShowcaseSection() {
   const [activeAgent, setActiveAgent] = useState(0);
   const agent = agentShowcase[activeAgent];
 
-  const agentUrls: Record<string, string> = {
-    "AI Lead Qualification": "https://ai.jaseir.com/ai-lead-qualification/",
-    "AI SEO Planner": "https://ai.jaseir.com/ai-planner/",
-    "AI Content Planner": "https://ai.jaseir.com/ai-content-planner/",
-    "AI Conversion Friction Analyzer": "https://ai.jaseir.com/conversion-friction-analyzer/",
-
-    "AI Competitor Comparison": "https://ai.jaseir.com/ai-competitor-comparison/",
-    "AI Booking Agent": "https://ai.jaseir.com/ai-booking-agent/",
-  };
-
-  const agentIcons = ["people", "chart", "doc", "target", "web","calendar"];
+  // Colour, icon and link for each showcase entry come from lib/agents.ts.
+  const agentDefs = agentShowcase.map((item) => getAgent(showcaseSlugs[item.name]));
+  const activeDef = agentDefs[activeAgent];
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -844,11 +847,6 @@ function AgentsShowcaseSection() {
 
     return () => window.clearInterval(timer);
   }, []);
-
-  const openAgent = (name: string) => {
-    const url = agentUrls[name];
-    if (url) window.open(url, "_blank", "noopener,noreferrer");
-  };
 
   return (
     <>
@@ -883,7 +881,7 @@ function AgentsShowcaseSection() {
           </div>
 
           {/* THE LARGE BOX */}
-          <div className="agentlab-box">
+          <div className="agentlab-box" style={agentVars(activeDef)}>
             {/* Box top bar */}
             <div className="agentlab-box-topbar">
               <div className="agentlab-window-dots">
@@ -923,10 +921,11 @@ function AgentsShowcaseSection() {
                         className={`agentlab-agent-nav-item ${
                           active ? "active" : ""
                         }`}
+                        style={agentVars(agentDefs[index])}
                         onClick={() => setActiveAgent(index)}
                       >
                         <span className="agentlab-agent-nav-icon">
-                          <Icon name={agentIcons[index]} />
+                          <AgentIcon name={agentDefs[index].icon} />
                         </span>
 
                         <span className="agentlab-agent-nav-name">
@@ -954,7 +953,7 @@ function AgentsShowcaseSection() {
                 </div>
 
                 <div className="agentlab-agent-icon-large">
-                  <Icon name={agentIcons[activeAgent]} />
+                  <AgentIcon name={activeDef.icon} size={30} />
                 </div>
 
                 <h3>{agent.name}</h3>
@@ -1014,7 +1013,7 @@ function AgentsShowcaseSection() {
                 </div>
 
                 <a
-                  href={agentUrls[agent.name]}
+                  href={agentHref({ kind: "hub" }, activeDef)}
                   className="agentlab-open-button"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -6717,66 +6716,6 @@ export default function Home() {
         }
       `}</style>
 
-      {/* ============================================================ */}
-      {/* HEADER                                                        */}
-      {/* ============================================================ */}
-
-      <header className="nav">
-  <div className="nav-inner">
-    <a
-  href="https://www.jaseir.com/"
-  className="logo"
->
-  <img
-    src="/logo.webp"
-    alt="Jaseir"
-    className="jaseir-logo"
-  />
-</a>
-
-    <nav className="nav-links">
-      <a
-  href="https://www.jaseir.com/"
->
-  Services
-</a>
-
-      <a href="#agent-workspace" className="nav-active">
-  AI Agents
-</a>
-
-      <a href="/rag-knowledge-assistant/">
-        RAG AI
-      </a>
-
-      <a href="#how-it-works">
-        How It Works
-      </a>
-
-      <a
-        href="https://www.jaseir.com/about/"
-      >
-        About
-      </a>
-
-      <a
-        href="https://www.jaseir.com/contact/"
-      >
-        Contact
-      </a>
-    </nav>
-
-    <div className="nav-actions">
-      <a
-        className="get-started"
-        href="https://www.jaseir.com/contact/"
-      >
-        Get Started
-        <span>→</span>
-      </a>
-    </div>
-  </div>
-</header>
 
       {/* ============================================================ */}
       {/* HERO                                                          */}

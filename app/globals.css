@@ -5559,3 +5559,74 @@ a {
             }
           }
         
+/* ================================================================== */
+/* AGENT WORKSPACE — per-agent accent colours from lib/agents.ts.      */
+/* .agentlab-box carries the active agent's --agent-* variables; each  */
+/* nav item carries its own, so every tab shows its agent's colour.    */
+/* ================================================================== */
+
+.agentlab-box .agentlab-agent-nav-item .agentlab-agent-nav-icon {
+  border-color: rgb(var(--agent-accent-bright-rgb) / 0.35);
+  background: rgb(var(--agent-accent-bright-rgb) / 0.1);
+  color: var(--agent-accent-bright);
+}
+
+.agentlab-box .agentlab-agent-nav-item:hover {
+  border-color: rgb(var(--agent-accent-bright-rgb) / 0.3);
+}
+
+/* Active tab keeps the white card from the home page; the agent's colour
+   shows in the side stripe and the icon badge. */
+.agentlab-box .agentlab-agent-nav-item.active {
+  border-color: var(--agent-accent-bright);
+  box-shadow:
+    inset 4px 0 0 var(--agent-accent),
+    0 10px 25px rgba(0, 0, 0, .12);
+}
+
+.agentlab-box .agentlab-agent-nav-item.active .agentlab-agent-nav-icon {
+  border-color: var(--agent-accent-line);
+  background: var(--agent-accent-soft);
+  color: var(--agent-accent);
+}
+
+.agentlab-agent-nav-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.agentlab-box .agentlab-agent-category {
+  color: var(--agent-accent-bright);
+}
+
+.agentlab-box .agentlab-agent-icon-large {
+  border-color: rgb(var(--agent-accent-bright-rgb) / 0.45);
+  background: var(--agent-gradient);
+  color: #fff;
+  box-shadow:
+    0 0 45px rgb(var(--agent-accent-bright-rgb) / 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, .2);
+}
+
+.agentlab-box .agentlab-agent-content {
+  background:
+    linear-gradient(90deg, rgb(var(--agent-accent-bright-rgb) / 0.07), transparent 42%);
+}
+
+.agentlab-box .agentlab-step-check {
+  border-color: rgb(var(--agent-accent-bright-rgb) / 0.55);
+  background: rgb(var(--agent-accent-bright-rgb) / 0.12);
+  color: var(--agent-accent-bright);
+}
+
+.agentlab-box .agentlab-open-button {
+  border-color: rgb(var(--agent-accent-bright-rgb) / 0.55);
+}
+
+.agentlab-box .agentlab-open-button:hover {
+  border-color: var(--agent-accent-bright);
+}
+
+.agentlab-box .agentlab-insight-icon {
+  color: var(--agent-accent-bright);
+}

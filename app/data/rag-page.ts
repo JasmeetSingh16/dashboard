@@ -19,7 +19,7 @@ export const ragLinks = {
 export const whatsappUrl = WHATSAPP_URL;
 
 export const ragSeo = {
-  title: "RAG Chatbot & RAG Development Services | Jaseir",
+  title: "RAG Chatbot & RAG Development Services",
   description:
     "RAG chatbot for your business: answers customers and your team from your own documents, website and FAQs, with sources. RAG development services by Jaseir.",
   serviceName: "RAG Chatbot & RAG Development Services",

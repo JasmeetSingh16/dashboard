@@ -3,7 +3,6 @@ import path from "node:path";
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import { notFound } from "next/navigation";
-import SiteHeader from "../../../components/SiteHeader";
 import LeadButton from "../../../components/leads/LeadButton";
 import RagDemoExperience from "../../../components/rag/RagDemoExperience";
 import RagIcon from "../../../components/rag/RagIcon";
@@ -49,7 +48,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   if (!isIndustryDemoId(industry)) return {};
   const demo = ragDemos[industry];
   return {
-    title: `${seoName(demo.title)} | Jaseir`,
+    title: seoName(demo.title),
     description: `Try a live RAG assistant demo for ${ragDemoPages[industry].noun}s, answering from sample documents with sources.`,
     robots: { index: false, follow: true },
   };
@@ -83,8 +82,6 @@ export default async function IndustryDemoPage({ params }: Params) {
 
   return (
     <div className={`site rag-site ${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
-      <SiteHeader active="rag" theme="dark" />
-
       <main
         className="rag-page rdp"
         style={{ "--accent": card.accent, "--chat-accent": page.chatAccent } as React.CSSProperties}
