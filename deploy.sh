@@ -135,13 +135,13 @@ except Exception:
     data = []
 for p in data:
     e = p.get("pm2_env", {})
-    print("\t".join([u, p.get("name", ""), e.get("pm_cwd") or "", e.get("pm_exec_path") or "", e.get("status") or ""]))
+    print("\t".join([u, p.get("name", ""), e.get("pm_cwd") or "", e.get("pm_exec_path") or "", e.get("status") or "", str(p.get("pid") or "")]))
 ' "$u"
     else
       printf '%s' "$jl" | node -e '
 let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
   let data = []; try { data = JSON.parse(s.trim().split("\n").pop()); } catch {}
-  for (const p of data) { const e = p.pm2_env || {}; console.log([process.argv[1], p.name, e.pm_cwd || "", e.pm_exec_path || "", e.status || ""].join("\t")); }
+  for (const p of data) { const e = p.pm2_env || {}; console.log([process.argv[1], p.name, e.pm_cwd || "", e.pm_exec_path || "", e.status || "", String(p.pid || "")].join("\t")); }
 });' "$u"
     fi
   }
@@ -180,12 +180,12 @@ let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
 
   # Results per app (indexed like APPS)
   local -a DIR OWNER MANAGER MGR_NAME MGR_USER
-  local -a S_PULL S_BUILD S_RESTART S_LIVE NOTE
+  local -a S_PULL S_BUILD S_RESTART S_OK S_LIVE NOTE
   local i
   for i in "${!APPS[@]}"; do
     IFS='|' read -r key repo kind path <<<"${APPS[$i]}"
     DIR[$i]=""; OWNER[$i]=""; MANAGER[$i]=""; MGR_NAME[$i]=""; MGR_USER[$i]=""
-    S_PULL[$i]="➖"; S_BUILD[$i]="➖"; S_RESTART[$i]="➖"; S_LIVE[$i]="➖"; NOTE[$i]=""
+    S_PULL[$i]="➖"; S_BUILD[$i]="➖"; S_RESTART[$i]="➖"; S_OK[$i]="➖"; S_LIVE[$i]="➖"; NOTE[$i]=""
 
     local matches=() gd d url
     while IFS= read -r gd; do
@@ -330,6 +330,66 @@ let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
     esac
   }
 
+  # PIDs of a process and all its children (pm2 often runs `npm start`,
+  # and the port is held by the child `next-server` process).
+  pid_tree() {
+    local p="$1" c
+    [ -z "$p" ] || [ "$p" = "0" ] && return 0
+    echo "$p"
+    for c in $(pgrep -P "$p" 2>/dev/null); do pid_tree "$c"; done
+  }
+
+  app_pids() { # index
+    local j="$1" n
+    case "${MANAGER[$j]}" in
+      pm2)
+        for n in ${MGR_NAME[$j]}; do
+          pm2_procs_of "${MGR_USER[$j]}" | awk -F'\t' -v n="$n" '$2==n {print $6}'
+        done
+        ;;
+      systemd) systemctl show -p MainPID --value "${MGR_NAME[$j]}" 2>/dev/null ;;
+    esac
+  }
+
+  app_port() { # index → first TCP port the app's process tree listens on
+    local j="$1" p q
+    command -v ss >/dev/null 2>&1 || return 0
+    for p in $(app_pids "$j"); do
+      for q in $(pid_tree "$p"); do
+        ss -ltnpH 2>/dev/null | grep -E "pid=${q}[,)]" | awk '{print $4}' | sed -E 's/.*:([0-9]+)$/\1/' | head -1
+      done
+    done | head -1
+  }
+
+  app_logs() { # index lines
+    local j="$1" n="$2" name
+    case "${MANAGER[$j]}" in
+      pm2) for name in ${MGR_NAME[$j]}; do pm2_as "${MGR_USER[$j]}" logs "$name" --lines "$n" --nostream 2>&1 | tail -n "$((n + 5))"; done ;;
+      systemd) journalctl -u "${MGR_NAME[$j]}" -n "$n" --no-pager 2>&1 ;;
+      *) echo "  (no process manager logs)" ;;
+    esac
+  }
+
+  # After a restart: does the app answer on its own port (or, if the port
+  # can't be found, on the live URL)? Retries for up to 30 seconds.
+  health_check() { # index path
+    local j="$1" path="$2" port url code="" _
+    for _ in 1 2 3 4 5 6; do
+      sleep 5
+      port="$(app_port "$j")"
+      if [ -n "$port" ]; then url="http://127.0.0.1:$port$path"; else url="$LIVE$path?deploycheck=$STAMP"; fi
+      code="$(curl -s -o /dev/null -L -m 15 -w '%{http_code}' "$url")"
+      [ "$code" = "200" ] && break
+    done
+    if [ "$code" = "200" ]; then
+      S_OK[$j]="✅"; ok "Responds: $url → 200"
+    else
+      S_OK[$j]="❌"; bad "NOT RESPONDING: $url → ${code:-no answer}"
+      echo "  Last 30 log lines:"
+      app_logs "$j" 30 | sed 's/^/     /'
+    fi
+  }
+
   # Make app files readable by other users (e.g. nginx serving /static),
   # except secrets and runtime data. Repairs files written by the first
   # version of this script, which used a private umask.
@@ -384,7 +444,8 @@ let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
         fi
       done
       S_BUILD[$i]="➖"
-      if restart_app "$i"; then S_RESTART[$i]="✅"; ok "Restarted"; else S_RESTART[$i]="❌"; bad "Restart failed or no process manager found"; fi
+      if restart_app "$i"; then S_RESTART[$i]="✅"; ok "Restarted"; health_check "$i" "/"
+      else S_RESTART[$i]="❌"; bad "Restart failed or no process manager found"; fi
       continue
     fi
 
@@ -402,7 +463,8 @@ let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
     if [ "$built" = 1 ]; then
       S_BUILD[$i]="✅"; ok "Build succeeded"
       rm -rf "$d/.next.deploy-backup"
-      if restart_app "$i"; then S_RESTART[$i]="✅"; ok "Restarted"; else S_RESTART[$i]="❌"; bad "Restart failed or no process manager found"; fi
+      if restart_app "$i"; then S_RESTART[$i]="✅"; ok "Restarted"; health_check "$i" "$path"
+      else S_RESTART[$i]="❌"; bad "Restart failed or no process manager found"; fi
     else
       S_BUILD[$i]="❌"; S_RESTART[$i]="➖"
       bad "BUILD FAILED for $key — rolling back to the previous version ($OLD_HEAD)."
@@ -450,11 +512,11 @@ let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
   hr
   echo "SUMMARY"
   hr
-  printf '  %-22s %-8s %-8s %-10s %-6s %s\n' "APP" "PULLED" "BUILT" "RESTARTED" "LIVE" "NOTE"
+  printf '  %-22s %-8s %-8s %-10s %-9s %-6s %s\n' "APP" "PULLED" "BUILT" "RESTARTED" "RESPONDS" "LIVE" "NOTE"
   for i in "${!APPS[@]}"; do
     IFS='|' read -r key repo kind path <<<"${APPS[$i]}"
     [ -z "${DIR[$i]}" ] && NOTE[$i]="not found on server — skipped"
-    printf '  %-22s %-8s %-8s %-10s %-6s %s\n' "$key" "${S_PULL[$i]}" "${S_BUILD[$i]}" "${S_RESTART[$i]}" "${S_LIVE[$i]}" "${NOTE[$i]}"
+    printf '  %-22s %-8s %-8s %-10s %-9s %-6s %s\n' "$key" "${S_PULL[$i]}" "${S_BUILD[$i]}" "${S_RESTART[$i]}" "${S_OK[$i]}" "${S_LIVE[$i]}" "${NOTE[$i]}"
   done
   hr
   echo "Backup:          $BACKUP"
