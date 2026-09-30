@@ -49,6 +49,16 @@ export default function PrivacyPage() {
           </section>
 
           <section>
+            <h2>The &ldquo;Book a free call&rdquo; form</h2>
+            <p>
+              When you request a call, we store your name, email, phone/WhatsApp number and website (if you give them),
+              what you&rsquo;d like to automate, your preferred time and when you sent it — only to arrange the call and
+              follow up about it. We keep it for up to 24 months after our last contact, or until you ask us to delete
+              it.
+            </p>
+          </section>
+
+          <section>
             <h2>2. The &ldquo;Get your full report&rdquo; form on the free AI agents</h2>
             <p>
               When you unlock a full report from one of our free agents (SEO Planner, Content Planner, Conversion

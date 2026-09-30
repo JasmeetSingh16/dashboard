@@ -13,6 +13,7 @@ const columns: { key: string; label: string }[] = [
   { key: "agent", label: "Agent" },
   { key: "name", label: "Name" },
   { key: "email", label: "Email" },
+  { key: "phone", label: "Phone" },
   { key: "website", label: "Website" },
   { key: "agent_input", label: "Input" },
   { key: "result_summary", label: "Result" },

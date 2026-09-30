@@ -1,0 +1,105 @@
+/* /book-a-call/ — copy on the left, form card on the right. */
+
+.bac-page {
+  padding: calc(var(--jk-header-h) + 40px) 0 72px;
+}
+
+.bac-grid {
+  display: grid;
+  gap: 32px;
+}
+
+@media (min-width: 1024px) {
+  .bac-grid {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: start;
+    gap: 56px;
+  }
+}
+
+.bac-title {
+  margin-top: 10px;
+}
+
+.bac-copy .jk-lede {
+  margin-top: 16px;
+}
+
+.bac-steps {
+  display: grid;
+  margin: 28px 0 0;
+  padding: 0;
+  gap: 18px;
+  list-style: none;
+}
+
+.bac-steps li {
+  display: flex;
+  gap: 14px;
+}
+
+.bac-step-icon {
+  display: inline-grid;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  place-items: center;
+  border-radius: 11px;
+  background: var(--agent-accent-soft);
+  color: var(--agent-accent-ink);
+}
+
+.bac-step-title {
+  color: var(--jk-ink);
+  font-weight: 650;
+}
+
+.bac-step-text {
+  color: var(--jk-body);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.bac-whatsapp {
+  margin-top: 26px !important;
+  color: var(--jk-muted);
+  font-size: 15px;
+}
+
+.bac-whatsapp a,
+.bac-card .jk-fineprint a {
+  color: var(--agent-accent-ink);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.bac-card {
+  display: grid;
+  gap: 16px;
+}
+
+.bac-row {
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .bac-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.bac-sent {
+  justify-items: start;
+}
+
+.bac-sent-icon {
+  color: var(--agent-accent);
+}
+
+.bac-card-title {
+  color: var(--jk-ink);
+  font-size: 22px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
