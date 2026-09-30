@@ -114,7 +114,7 @@ export async function POST(request: Request) {
     input: agentInput,
     summary,
     pageUrl: /^https?:\/\//.test(pageUrl) ? pageUrl : null,
-    returning: body.returning === true,
+    isReturning: body.returning === true,
   };
 
   let saveError: string | undefined;
@@ -127,7 +127,7 @@ export async function POST(request: Request) {
   }
 
   // Remembered visitors unlocking another agent are saved but not emailed again.
-  if (!lead.returning || saveError) await notifyAgentLead(lead, saveError);
+  if (!lead.isReturning || saveError) await notifyAgentLead(lead, saveError);
 
   // The visitor gets their report even if saving failed.
   return json({ ok: true, full });

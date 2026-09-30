@@ -19,6 +19,6 @@ alter table public.leads add column if not exists result_summary text;
 -- Full page URL the form was submitted from.
 alter table public.leads add column if not exists page_url       text;
 -- True when a remembered visitor unlocked another report automatically.
-alter table public.leads add column if not exists returning      boolean not null default false;
+alter table public.leads add column if not exists is_returning   boolean not null default false;
 
 create index if not exists leads_tenant_email_idx on public.leads (tenant_id, email);

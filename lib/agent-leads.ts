@@ -27,7 +27,7 @@ export type AgentLead = {
   input: string;
   summary: string;
   pageUrl: string | null;
-  returning: boolean;
+  isReturning: boolean;
 };
 
 export async function saveAgentLead(lead: AgentLead): Promise<void> {
@@ -51,7 +51,7 @@ export async function saveAgentLead(lead: AgentLead): Promise<void> {
       result_summary: lead.summary,
       page_url: lead.pageUrl,
       source_page: sourcePage,
-      returning: lead.returning,
+      is_returning: lead.isReturning,
       consented_at: consentedAt,
     });
   if (!error) return;
@@ -69,7 +69,7 @@ function detailLines(lead: AgentLead, at: string): string[] {
     `Agent input: ${lead.input || "—"}`,
     `Result: ${lead.summary || "—"}`,
     `Page: ${lead.pageUrl ?? "—"}`,
-    `Returning visitor: ${lead.returning ? "yes" : "no"}`,
+    `Returning visitor: ${lead.isReturning ? "yes" : "no"}`,
     `Submitted: ${at}`,
   ];
 }
@@ -113,7 +113,7 @@ export const LEAD_COLUMNS = [
   "message",
   "page_url",
   "source_page",
-  "returning",
+  "is_returning",
 ] as const;
 
 export type LeadRow = Partial<Record<(typeof LEAD_COLUMNS)[number], string | boolean | null>> & { id: string };
