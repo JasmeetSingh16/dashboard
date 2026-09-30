@@ -28,6 +28,8 @@ export type AgentLead = {
   summary: string;
   pageUrl: string | null;
   isReturning: boolean;
+  /** Signed in with Google (verified email) instead of typing the form. */
+  viaGoogle: boolean;
 };
 
 export async function saveAgentLead(lead: AgentLead): Promise<void> {
@@ -52,6 +54,7 @@ export async function saveAgentLead(lead: AgentLead): Promise<void> {
       page_url: lead.pageUrl,
       source_page: sourcePage,
       is_returning: lead.isReturning,
+      message: lead.viaGoogle ? "Signed in with Google" : null,
       consented_at: consentedAt,
     });
   if (!error) return;
@@ -70,6 +73,7 @@ function detailLines(lead: AgentLead, at: string): string[] {
     `Result: ${lead.summary || "—"}`,
     `Page: ${lead.pageUrl ?? "—"}`,
     `Returning visitor: ${lead.isReturning ? "yes" : "no"}`,
+    `Signed in with Google: ${lead.viaGoogle ? "yes (verified email)" : "no"}`,
     `Submitted: ${at}`,
   ];
 }

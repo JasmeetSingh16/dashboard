@@ -63,6 +63,11 @@ export default function PrivacyPage() {
               <li>the page you used it on and when.</li>
             </ul>
             <p>
+              If you choose &ldquo;Continue with Google&rdquo; instead of typing the form, Google shares your name and
+              verified email address with us for this purpose. We don&rsquo;t receive your Google password or access
+              to your Google account.
+            </p>
+            <p>
               Your browser also remembers your name, email and website (in local storage) so you don&rsquo;t have to
               fill in the form again on the other agents. Clearing this site&rsquo;s data in your browser removes it.
             </p>

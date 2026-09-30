@@ -10,6 +10,7 @@ import {
 import { clip, isGatedAgent, normalizeGateWebsite, validateGateLead, type GatedAgent } from "@/lib/lead-gate";
 import { checkLeadLimit, clientIp } from "@/lib/leads";
 import { visitorKey } from "@/lib/rag/rate-limit";
+import { verifyGoogleCredential } from "@/lib/google-auth";
 import { openReport } from "@/lib/report-gate";
 
 /*
@@ -17,7 +18,8 @@ import { openReport } from "@/lib/report-gate";
  * so the agent apps call it same-origin).
  *
  * POST /api/agent-leads/  { name, email, website?, fax? (honeypot), agent, token | null,
- *                           input?, summary?, pageUrl?, returning? }
+ *                           input?, summary?, pageUrl?, returning?,
+ *                           googleCredential? (replaces name + email with Google's verified ones) }
  *   → 200 { ok: true, full }       full report (null when the page already has it)
  *   → 400 { ok: false, errors }    | 410 { reason: "expired" } | 429 { reason: "rate-limited" }
  *
@@ -74,6 +76,16 @@ export async function POST(request: Request) {
   if (text(body.fax).trim()) return json({ ok: true, full: null });
 
   const input = { name: text(body.name, 200), email: text(body.email, 300), website: text(body.website, 300) };
+
+  // "Continue with Google": name + email come from the verified Google token.
+  const googleCredential = text(body.googleCredential, 5000);
+  if (googleCredential) {
+    const profile = await verifyGoogleCredential(googleCredential);
+    if (!profile) return json({ ok: false, reason: "google" }, 400);
+    input.name = profile.name;
+    input.email = profile.email;
+  }
+
   const errors = validateGateLead(input);
   if (Object.keys(errors).length > 0) return json({ ok: false, errors }, 400);
 
@@ -115,6 +127,7 @@ export async function POST(request: Request) {
     summary,
     pageUrl: /^https?:\/\//.test(pageUrl) ? pageUrl : null,
     isReturning: body.returning === true,
+    viaGoogle: Boolean(googleCredential),
   };
 
   let saveError: string | undefined;
@@ -130,7 +143,8 @@ export async function POST(request: Request) {
   if (!lead.isReturning || saveError) await notifyAgentLead(lead, saveError);
 
   // The visitor gets their report even if saving failed.
-  return json({ ok: true, full });
+  // `lead` lets the page remember a Google sign-in for the other agents.
+  return json({ ok: true, full, lead: { name: lead.name, email: lead.email, website: input.website.trim() } });
 }
 
 export async function GET(request: Request) {
