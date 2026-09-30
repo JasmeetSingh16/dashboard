@@ -218,27 +218,6 @@ const jaseirServices = [
   },
 ];
 
-const trustedLogos = [
-  { key: "stripe", node: <span className="trusted-logo-mark stripe-mark">stripe</span>, label: null },
-  { key: "openai", node: <span className="trusted-logo-mark openai-mark" />, label: "OpenAI" },
-  { key: "notion", node: <span className="trusted-logo-mark notion-mark">N</span>, label: "Notion" },
-  { key: "vercel", node: <span className="trusted-logo-mark vercel-mark" />, label: "Vercel" },
-  { key: "linear", node: <span className="trusted-logo-mark linear-mark" />, label: "Linear" },
-  {
-    key: "figma",
-    node: (
-      <span className="trusted-logo-mark figma-mark">
-        <span />
-        <span />
-        <span />
-        <span />
-        <span />
-      </span>
-    ),
-    label: "Figma",
-  },
-];
-
 /* ------------------------------------------------------------------ */
 /* PLATFORM CARD AI VISUALS                                          */
 /* ------------------------------------------------------------------ */
@@ -2856,245 +2835,6 @@ export default function Home() {
           font-size: 18px;
           font-weight: 400;
         }
-
-        /* ========================================================= */
-        /* TRUSTED BY TEAMS (centered, auto-scrolling marquee)         */
-        /* ========================================================= */
-
-        .trusted-section {
-          width: 100%;
-          padding: 42px 0;
-
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-
-          gap: 26px;
-
-          border-top: 1px solid rgba(30, 50, 100, 0.07);
-
-          background:
-            linear-gradient(
-              180deg,
-              rgba(255, 255, 255, 0.76) 0%,
-              rgba(250, 252, 255, 0.9) 100%
-            );
-
-          overflow: hidden;
-        }
-
-        .trusted-heading {
-          color: #9aa7c0;
-
-          font-size: 11px;
-          font-weight: 700;
-
-          letter-spacing: 1.35px;
-          text-transform: uppercase;
-
-          text-align: center;
-          white-space: nowrap;
-        }
-
-        .trusted-marquee {
-          width: min(1450px, calc(100% - 60px));
-
-          overflow: hidden;
-
-          -webkit-mask-image: linear-gradient(
-            90deg,
-            transparent 0%,
-            #000 10%,
-            #000 90%,
-            transparent 100%
-          );
-
-          mask-image: linear-gradient(
-            90deg,
-            transparent 0%,
-            #000 10%,
-            #000 90%,
-            transparent 100%
-          );
-        }
-
-        .trusted-track {
-          display: flex;
-          align-items: center;
-
-          gap: 64px;
-
-          width: max-content;
-
-          animation: marqueeScroll 24s linear infinite;
-        }
-
-        .trusted-section:hover .trusted-track {
-          animation-play-state: paused;
-        }
-
-        @keyframes marqueeScroll {
-          from {
-            transform: translateX(0);
-          }
-
-          to {
-            transform: translateX(-50%);
-          }
-        }
-
-        .trusted-logo {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 9px;
-
-          color: #34415f;
-
-          font-size: 19px;
-          font-weight: 700;
-
-          letter-spacing: -0.65px;
-
-          white-space: nowrap;
-          opacity: 0.94;
-
-          flex: 0 0 auto;
-        }
-
-        .trusted-logo-mark {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-
-          color: currentColor;
-          flex: 0 0 auto;
-        }
-
-        .stripe-mark {
-          font-size: 25px;
-          font-weight: 800;
-          letter-spacing: -1.8px;
-        }
-
-        .openai-mark {
-          width: 25px;
-          height: 25px;
-
-          border: 2.2px solid currentColor;
-          border-radius: 8px;
-
-          position: relative;
-          transform: rotate(30deg);
-        }
-
-        .openai-mark::before {
-          content: "";
-
-          position: absolute;
-          inset: 4px;
-
-          border: 1.7px solid currentColor;
-          border-radius: 50%;
-        }
-
-        .notion-mark {
-          width: 25px;
-          height: 25px;
-
-          border: 2px solid currentColor;
-          border-radius: 3px;
-
-          font-size: 15px;
-          font-weight: 800;
-          letter-spacing: -1px;
-        }
-
-        .vercel-mark {
-          width: 0;
-          height: 0;
-
-          border-left: 13px solid transparent;
-          border-right: 13px solid transparent;
-          border-bottom: 23px solid currentColor;
-        }
-
-        .linear-mark {
-          width: 25px;
-          height: 25px;
-
-          border-radius: 50%;
-
-          background:
-            linear-gradient(
-              135deg,
-              transparent 0 28%,
-              currentColor 29% 36%,
-              transparent 37% 44%,
-              currentColor 45% 52%,
-              transparent 53% 61%,
-              currentColor 62% 69%,
-              transparent 70%
-            );
-        }
-
-        .figma-mark {
-          width: 25px;
-          height: 25px;
-
-          display: grid;
-          grid-template-columns: repeat(2, 10px);
-          grid-template-rows: repeat(3, 8px);
-          gap: 1px;
-        }
-
-        .figma-mark span {
-          display: block;
-          background: currentColor;
-        }
-
-        .figma-mark span:nth-child(1) {
-          border-radius: 6px 2px 2px 6px;
-        }
-
-        .figma-mark span:nth-child(2) {
-          border-radius: 2px 6px 6px 2px;
-        }
-
-        .figma-mark span:nth-child(3) {
-          border-radius: 6px 2px 2px 6px;
-        }
-
-        .figma-mark span:nth-child(4) {
-          border-radius: 50%;
-        }
-
-        .figma-mark span:nth-child(5) {
-          border-radius: 6px 2px 6px 6px;
-        }
-
-        .figma-mark span:nth-child(6) {
-          display: none;
-        }
-
-
-        .shopify-mark {
-          width: 25px;
-          height: 25px;
-
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-
-          border: 2px solid currentColor;
-          border-radius: 7px;
-
-          font-size: 13px;
-          font-weight: 800;
-          letter-spacing: -0.5px;
-        }
-
-
 
         /* ========================================================= */
         /* HOW IT WORKS (legacy — no longer rendered, kept unused)    */
@@ -6535,19 +6275,6 @@ export default function Home() {
           }
         }
 
-        @media (max-width: 900px) {
-          .trusted-section {
-            padding: 30px 0;
-          }
-
-          .trusted-marquee {
-            width: calc(100% - 32px);
-          }
-
-          .trusted-track {
-            gap: 44px;
-          }
-        }
 
 
         @media (max-width: 1150px) {
@@ -6704,14 +6431,6 @@ export default function Home() {
           .impact-metric + .impact-metric {
             border-left: 0;
             border-top: 1px solid rgba(216,224,239,0.95);
-          }
-
-          .trusted-track {
-            gap: 34px;
-          }
-
-          .trusted-logo {
-            font-size: 16px;
           }
         }
       `}</style>
@@ -6892,34 +6611,6 @@ export default function Home() {
       {/* ============================================================ */}
 
       <EcosystemSection />
-
-      {/* ============================================================ */}
-      {/* TRUSTED BY INNOVATIVE TEAMS (centered, auto-scrolling)       */}
-      {/* ============================================================ */}
-
-      <section className="trusted-section" aria-label="Trusted by innovative teams">
-        <div className="trusted-heading">
-          Trusted by innovative teams
-        </div>
-
-        <div className="trusted-marquee">
-          <div className="trusted-track">
-            {trustedLogos.map((logo) => (
-              <div className="trusted-logo" key={`a-${logo.key}`}>
-                {logo.node}
-                {logo.label && <span>{logo.label}</span>}
-              </div>
-            ))}
-
-            {trustedLogos.map((logo) => (
-              <div className="trusted-logo" key={`b-${logo.key}`} aria-hidden="true">
-                {logo.node}
-                {logo.label && <span>{logo.label}</span>}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
     </main>
   );
 }

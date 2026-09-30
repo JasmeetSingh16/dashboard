@@ -30,12 +30,15 @@ const KIT_FILES = [
   "lib/agents.ts",
   "lib/site.ts",
   "lib/agent-metadata.ts",
+  "lib/lead-gate.ts",
+  "lib/report-gate.ts",
   "components/layout/SiteHeader.tsx",
   "components/layout/SiteFooter.tsx",
   "components/layout/CurrentYear.tsx",
   "components/agent/AgentIcon.tsx",
   "components/agent/AgentTemplate.tsx",
   "components/agent/AgentUi.tsx",
+  "components/agent/ReportGate.tsx",
   "styles/jaseir-kit.css",
 ];
 

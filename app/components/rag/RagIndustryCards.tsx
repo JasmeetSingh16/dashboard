@@ -3,7 +3,6 @@
 import { useCallback, useRef, useState } from "react";
 import { DEMO_BY_INDUSTRY, demoPageUrl } from "@/app/data/rag-demos";
 import { ragIndustries, ragLinks } from "@/app/data/rag-page";
-import LeadButton from "../leads/LeadButton";
 import RagIcon from "./RagIcon";
 import RagSnapDots from "./RagSnapDots";
 
@@ -50,7 +49,13 @@ export default function RagIndustryCards() {
                 <RagIcon name={item.icon} size={22} />
               </span>
               <h3 id={`rag-icard-${item.id}`}>{item.name}</h3>
-              <a className="rag-icard-arrow" href={ragLinks.contact} aria-label={`${cta} ${item.name}`}>
+              <a
+                className="rag-icard-arrow"
+                href={ragLinks.booking}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${cta} ${item.name}`}
+              >
                 <RagIcon name="arrow" size={18} />
               </a>
             </header>
@@ -84,13 +89,13 @@ export default function RagIndustryCards() {
                   <RagIcon name="sparkle" size={15} />
                   {tryLabel}
                 </a>
-                <LeadButton className="rag-icard-cta" industry={demo}>
+                <a className="rag-icard-cta" href={ragLinks.booking} target="_blank" rel="noopener noreferrer">
                   {demoCta}
                   <span aria-hidden="true">›</span>
-                </LeadButton>
+                </a>
               </div>
             ) : (
-              <a className="rag-icard-cta" href={ragLinks.contact}>
+              <a className="rag-icard-cta" href={ragLinks.booking} target="_blank" rel="noopener noreferrer">
                 {cta} {item.name}
                 <span aria-hidden="true">›</span>
               </a>

@@ -214,7 +214,7 @@ function HandoffCard({ reply }: { reply: Extract<AssistantReply, { type: "fallba
         <strong>{title}</strong>
         <p>{body}</p>
         <div className="rcp-handoff-actions">
-          <a className="rcp-btn rcp-btn-amber" href={reply.handoffUrl}>
+          <a className="rcp-btn rcp-btn-amber" href={reply.handoffUrl} target="_blank" rel="noopener noreferrer">
             <RagIcon name="users" size={15} />
             {reply.handoffLabel ?? ragDemo.handoffLabel}
           </a>
@@ -288,7 +288,7 @@ export default function RagChatPanel({
   // Industry demo pages: light panel, demo copy, handoff with the lead form.
   const isDemo = demo.sample;
   // A new session = a new assistant (fresh conversation id + history).
-  const assistant = useMemo(() => getKnowledgeAssistant(ragLinks.contact, tenant), [session, tenant]); // eslint-disable-line react-hooks/exhaustive-deps
+  const assistant = useMemo(() => getKnowledgeAssistant(ragLinks.booking, tenant), [session, tenant]); // eslint-disable-line react-hooks/exhaustive-deps
   // A question to send as soon as the (new) assistant is ready.
   const [pending, setPending] = useState<string | null>(null);
 

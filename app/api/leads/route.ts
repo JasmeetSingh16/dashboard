@@ -1,5 +1,5 @@
 import { validateLead, type LeadInput } from "@/app/lib/leads";
-import { checkLeadLimit, notifyLead, saveLead, toLead } from "@/lib/leads";
+import { checkLeadLimit, clientIp, notifyLead, saveLead, toLead } from "@/lib/leads";
 import { visitorKey } from "@/lib/rag/rate-limit";
 
 /*
@@ -10,12 +10,6 @@ import { visitorKey } from "@/lib/rag/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-function clientIp(request: Request): string {
-  const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim();
-  return request.headers.get("x-real-ip") ?? "local";
-}
 
 const text = (value: unknown, max = 2000) => (typeof value === "string" ? value.slice(0, max) : "");
 

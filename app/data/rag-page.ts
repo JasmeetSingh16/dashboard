@@ -4,15 +4,18 @@
 /*
  * All text for /rag-knowledge-assistant/ and the home page RAG section.
  * The demo's knowledge base lives in ./rag-knowledge-base.json.
- * The WhatsApp number and contact URL live in ./site-config.ts.
+ * The WhatsApp number lives in ./site-config.ts; the booking URL in
+ * lib/site.ts.
  */
 
-import { CONTACT_URL, WHATSAPP_URL } from "./site-config";
+import { BOOKING_URL, CONTACT_URL, WHATSAPP_URL } from "./site-config";
 
 export const ragLinks = {
   page: "/rag-knowledge-assistant/",
   canonical: "https://ai.jaseir.com/rag-knowledge-assistant/",
   contact: CONTACT_URL,
+  /** Every call to action on the page (opens in a new tab). */
+  booking: BOOKING_URL,
   leadQualification: "https://ai.jaseir.com/ai-lead-qualification/",
 };
 
@@ -42,7 +45,7 @@ export const ragHero = {
     { icon: "users", title: "Helps your team", text: "Support, sales, operations" },
   ],
   primaryCta: { label: "Try the live demo", href: "#live-demo" },
-  secondaryCta: { label: "Get a free demo on your docs", href: ragLinks.contact },
+  secondaryCta: { label: "Get a free demo on your docs", href: ragLinks.booking },
   trust: [
     { icon: "clock", label: "Always on 24/7" },
     { icon: "check", label: "Answers with sources" },
@@ -413,7 +416,6 @@ export const ragTrust = {
     "Says \"I don't know\" and hands off to a human",
     "Your data is never used to train public AI models",
   ],
-  compliance: ["GDPR-ready", "EU or US data hosting", "Delete your data anytime"],
   example: {
     question: "Can I cancel my booking and get a refund?",
     answer:
@@ -479,7 +481,7 @@ export const ragFinalCta = {
   label: "FREE DEMO",
   title: "Try it on your own content.",
   text: "Send us 5 documents and your 10 most common customer questions. See your AI assistant working before you pay anything.",
-  primary: { label: "Get my free RAG demo", href: ragLinks.contact },
+  primary: { label: "Get my free RAG demo", href: ragLinks.booking },
   whatsapp: { label: "Chat on WhatsApp", href: whatsappUrl },
 };
 

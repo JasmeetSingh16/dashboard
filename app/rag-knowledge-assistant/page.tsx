@@ -189,7 +189,7 @@ export default function RagKnowledgeAssistantPage() {
                   {ragHero.primaryCta.label}
                   <span>→</span>
                 </a>
-                <a className="rag-text-link" href={ragHero.secondaryCta.href}>
+                <a className="rag-text-link" href={ragHero.secondaryCta.href} target="_blank" rel="noopener noreferrer">
                   {ragHero.secondaryCta.label}
                   <span aria-hidden="true">→</span>
                 </a>
@@ -435,7 +435,9 @@ export default function RagKnowledgeAssistantPage() {
                   </ul>
                   <a
                     className={`primary-button ${item.featured ? "rag-btn-primary" : "rag-btn-ghost"}`}
-                    href={ragLinks.contact}
+                    href={ragLinks.booking}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     {item.cta}
                     <span>→</span>
@@ -470,15 +472,6 @@ export default function RagKnowledgeAssistantPage() {
                   </li>
                 ))}
               </ul>
-              <p className="rag-compliance" data-reveal>
-                <RagIcon name="policy" size={16} />
-                {ragTrust.compliance.map((item, index) => (
-                  <span key={item}>
-                    {index > 0 && <i aria-hidden="true">·</i>}
-                    {item}
-                  </span>
-                ))}
-              </p>
             </div>
 
             <figure className="rag-answer-card" data-reveal>
@@ -547,7 +540,12 @@ export default function RagKnowledgeAssistantPage() {
                 <h2 id="rag-final-title">{ragFinalCta.title}</h2>
                 <p>{ragFinalCta.text}</p>
                 <div className="rag-buttons">
-                  <a className="primary-button rag-btn-primary" href={ragFinalCta.primary.href}>
+                  <a
+                    className="primary-button rag-btn-primary"
+                    href={ragFinalCta.primary.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {ragFinalCta.primary.label}
                     <span>→</span>
                   </a>

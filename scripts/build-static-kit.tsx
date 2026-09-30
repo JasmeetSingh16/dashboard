@@ -8,7 +8,7 @@
 /* ------------------------------------------------------------------ */
 
 import { renderToStaticMarkup } from "react-dom/server";
-import { RelatedAgents } from "../components/agent/AgentTemplate";
+import { BookingButton, RelatedAgents } from "../components/agent/AgentTemplate";
 import SiteFooter, { type FooterCta } from "../components/layout/SiteFooter";
 import SiteHeader from "../components/layout/SiteHeader";
 import { agentVars, getAgent, type AgentSlug } from "../lib/agents";
@@ -34,6 +34,7 @@ const files: Record<string, string> = {
   "templates/partials/site_header.html": renderToStaticMarkup(<SiteHeader zone={zone} />),
   "templates/partials/site_footer.html": renderToStaticMarkup(<SiteFooter zone={zone} cta={ctas[slug]} />),
   "templates/partials/related_agents.html": renderToStaticMarkup(<RelatedAgents slug={slug} zone={zone} />),
+  "templates/partials/booking_button.html": renderToStaticMarkup(<BookingButton />),
   "templates/partials/agent_vars.html": `<style>\n:root {\n${vars}\n  --font-geist-sans: "Geist";\n  --font-geist-mono: "Geist Mono";\n}\n</style>`,
 };
 

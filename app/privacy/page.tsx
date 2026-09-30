@@ -13,10 +13,11 @@ const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-rag
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "What the Jaseir demo request form and RAG chat assistant collect, why, how long it is kept, and how to ask for deletion.",
+  description:
+    "What the Jaseir demo request form, the free AI agents' report form and the RAG chat assistant collect, why, how long it is kept, and how to ask for deletion.",
 };
 
-const UPDATED = "26 September 2026";
+const UPDATED = "30 September 2026";
 
 export default function PrivacyPage() {
   const mail = <a href={`mailto:${PRIVACY_EMAIL}`}>{PRIVACY_EMAIL}</a>;
@@ -28,7 +29,7 @@ export default function PrivacyPage() {
           <p className="privacy-kicker">Last updated {UPDATED}</p>
           <h1>Privacy policy</h1>
           <p className="privacy-lead">
-            This page explains what we collect through the demo request form and the AI chat assistant on this
+            This page explains what we collect through the demo request form, the free AI agents and the AI chat assistant on this
             website, why we collect it, how long we keep it, and how you can ask us to delete it. We keep it short and
             only collect what we need.
           </p>
@@ -48,7 +49,31 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2>2. The AI chat assistant</h2>
+            <h2>2. The &ldquo;Get your full report&rdquo; form on the free AI agents</h2>
+            <p>
+              When you unlock a full report from one of our free agents (SEO Planner, Content Planner, Conversion
+              Friction Analyzer, Competitor Comparison or Lead Qualification), we store:
+            </p>
+            <ul>
+              <li>your name, email and company website, if you give it;</li>
+              <li>
+                which agent you used, what you entered into it (for example the website you analysed) and a short
+                summary of the result;
+              </li>
+              <li>the page you used it on and when.</li>
+            </ul>
+            <p>
+              Your browser also remembers your name, email and website (in local storage) so you don&rsquo;t have to
+              fill in the form again on the other agents. Clearing this site&rsquo;s data in your browser removes it.
+            </p>
+            <p>
+              <strong>Why:</strong> to follow up about your report and to send you occasional AI tips by email. We
+              don&rsquo;t sell your data. To stop the emails, reply to any of them or write to {mail}.
+            </p>
+          </section>
+
+          <section>
+            <h2>3. The AI chat assistant</h2>
             <p>When you use the chat, we store:</p>
             <ul>
               <li>the questions you type and the answers the assistant gives, with the documents it used;</li>
@@ -69,20 +94,25 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2>3. Where it is stored</h2>
+            <h2>4. Where it is stored</h2>
             <p>
               Form and chat data are stored in our database hosted by Supabase. Rate-limit counters and cached answers
-              are stored with Upstash. If email alerts are turned on, a copy of each demo request is emailed to our
-              team through Resend. We don&rsquo;t use advertising or tracking cookies for the form or the chat.
+              are stored with Upstash. If email alerts are turned on, a copy of each demo request and report form is
+              emailed to our team through our email provider. We don&rsquo;t use advertising or tracking cookies for
+              the forms, the agents or the chat.
             </p>
           </section>
 
           <section>
-            <h2>4. How long we keep it</h2>
+            <h2>5. How long we keep it</h2>
             <ul>
               <li>
                 <strong>Demo requests:</strong> up to 24 months after our last contact with you, or until you ask us to
                 delete them.
+              </li>
+              <li>
+                <strong>Report form details:</strong> up to 24 months after our last contact with you, or until you
+                ask us to delete them.
               </li>
               <li>
                 <strong>Chat questions, answers and feedback:</strong> up to 12 months.
@@ -98,7 +128,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2>5. Your rights and deletion</h2>
+            <h2>6. Your rights and deletion</h2>
             <p>
               You can ask us to see, correct or delete the data we hold about you at any time. Email {mail} with the
               email address you used in the form (for chat data, tell us roughly when you used it). We&rsquo;ll reply
@@ -107,7 +137,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2>6. Contact</h2>
+            <h2>7. Contact</h2>
             <p>Questions about this policy: {mail}.</p>
           </section>
         </div>
