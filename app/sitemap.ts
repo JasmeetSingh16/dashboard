@@ -7,7 +7,7 @@ import type { MetadataRoute } from "next";
 /* /sitemap.xml — the ONLY sitemap for https://ai.jaseir.com           */
 /* ------------------------------------------------------------------ */
 /*
- * Generated once at build time (Next caches sitemap.ts by default).
+ * Cached and regenerated at most once an hour (see `revalidate`).
  *
  * - Dashboard pages are found by scanning app/ for page.tsx, so a new
  *   page shows up here on the next build. Private pages are in EXCLUDE.
@@ -19,6 +19,13 @@ import type { MetadataRoute } from "next";
  * - The RAG industry demos (/rag-knowledge-assistant/demo/*) are noindex
  *   and deliberately not listed.
  */
+
+/**
+ * Rebuilt hourly at runtime, not frozen at build time: deploy.sh builds the
+ * dashboard before it pulls the agent apps, so a build-time sitemap would
+ * miss their newest commits.
+ */
+export const revalidate = 3600;
 
 const SITE = "https://ai.jaseir.com";
 
