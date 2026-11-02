@@ -6454,12 +6454,10 @@ export default function Home() {
           </div>
 
           <h1 className="hero-title">
-            AI Agents That Turn
-
+            AI Agents That Turn{" "}
             <span className="gradient-text">
               Information
-            </span>
-
+            </span>{" "}
             Into Action
           </h1>
 

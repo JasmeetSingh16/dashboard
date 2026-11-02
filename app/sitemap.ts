@@ -2,7 +2,6 @@ import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, statSync } from "node:fs";
 import path from "node:path";
 import type { MetadataRoute } from "next";
-import { INDUSTRY_DEMO_IDS } from "./data/rag-demos";
 
 /* ------------------------------------------------------------------ */
 /* /sitemap.xml — the ONLY sitemap for https://ai.jaseir.com           */
@@ -14,8 +13,11 @@ import { INDUSTRY_DEMO_IDS } from "./data/rag-demos";
  *   page shows up here on the next build. Private pages are in EXCLUDE.
  * - The agents are separate apps behind the same domain, so they're
  *   listed in AGENT_APPS. Add a new agent there.
- * - lastmod is the last git commit touching the page's files; if git
- *   isn't available it falls back to the build time.
+ * - lastmod is the last git commit touching the page's files (plus the
+ *   data/components it is built from, see PAGE_SOURCES). If no commit
+ *   date can be found, lastmod is left out rather than guessed.
+ * - The RAG industry demos (/rag-knowledge-assistant/demo/*) are noindex
+ *   and deliberately not listed.
  */
 
 const SITE = "https://ai.jaseir.com";
@@ -26,7 +28,8 @@ const EXCLUDE = new Set(["api", "leads-admin", "rag-debug"]);
 /**
  * Other apps served under ai.jaseir.com. `path` must be the exact URL
  * the app answers with 200: some use a trailing slash, some don't.
- * `repo` is the sibling checkout used for lastmod when it exists.
+ * `repo` is the GitHub repo name; its checkout (a sibling folder of this
+ * one, under any folder name) is used for lastmod.
  */
 const AGENT_APPS = [
   { path: "/ai-lead-qualification/", repo: "ai-lead-qualification" },
@@ -34,26 +37,44 @@ const AGENT_APPS = [
   { path: "/ai-content-planner/", repo: "ai-content-planner" },
   { path: "/conversion-friction-analyzer", repo: "conversion-friction-analyzer" },
   { path: "/ai-competitor-comparison/", repo: "ai-competitor-comparison" },
-  { path: "/ai-booking-agent/", repo: "booking-agent" },
+  { path: "/ai-booking-agent/", repo: "ai-booking-agent" },
 ];
+
+/** Extra files/folders (relative to ROOT) a page's content comes from. */
+const PAGE_SOURCES: Record<string, string[]> = {
+  "/": ["app/components/hero", "app/components/rag/RagHomeSection.tsx", "lib/agents.ts", "lib/agent-metadata.ts"],
+  "/rag-knowledge-assistant/": ["app/data/rag-page.ts", "app/components/rag"],
+};
 
 const ROOT = process.cwd();
 const APP_DIR = path.join(ROOT, "app");
-const BUILD_TIME = new Date();
 
-/** Last commit date touching any of `files` (relative to `cwd`), or the build time. */
-function lastModified(cwd: string, files: string[]): Date {
+function git(cwd: string, args: string[]): string {
   try {
-    const out = execFileSync(
-      "git",
-      ["-c", "safe.directory=*", "--literal-pathspecs", "log", "-1", "--format=%cI", "--", ...files],
-      { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"], timeout: 10_000 },
-    ).trim();
-    const date = new Date(out);
-    return out && !Number.isNaN(date.getTime()) ? date : BUILD_TIME;
+    return execFileSync("git", ["-c", "safe.directory=*", ...args], {
+      cwd,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+      timeout: 10_000,
+    }).trim();
   } catch {
-    return BUILD_TIME;
+    return "";
   }
+}
+
+/** Last commit date touching any of `files` (relative to `cwd`), or undefined. */
+function lastModified(cwd: string, files: string[]): Date | undefined {
+  const out = git(cwd, ["--literal-pathspecs", "log", "-1", "--format=%cI", "--", ...files]);
+  const date = new Date(out);
+  return out && !Number.isNaN(date.getTime()) ? date : undefined;
+}
+
+/** Sibling checkout whose origin is github.com/<owner>/<repo>, whatever the folder is called. */
+function findCheckout(repo: string): string | undefined {
+  const parent = path.join(ROOT, "..");
+  const pattern = new RegExp(`[:/]${repo}(\\.git)?/?$`, "i");
+  const dirs = [repo, ...readdirSync(parent).filter((name) => name !== repo)].map((name) => path.join(parent, name));
+  return dirs.find((dir) => existsSync(path.join(dir, ".git")) && pattern.test(git(dir, ["remote", "get-url", "origin"])));
 }
 
 /** Files directly inside `dir` (not sub-routes), relative to ROOT. */
@@ -87,23 +108,16 @@ function dashboardRoutes(dir = APP_DIR, segments: string[] = []): { url: string;
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages: MetadataRoute.Sitemap = dashboardRoutes().map(({ url, dir }) => ({
     url: `${SITE}${url}`,
-    lastModified: lastModified(ROOT, filesIn(dir)),
-  }));
-
-  const demoDir = path.join(APP_DIR, "rag-knowledge-assistant", "demo", "[industry]");
-  const demoModified = lastModified(ROOT, [...filesIn(demoDir), "app/data/rag-demos.ts"]);
-  const demos: MetadataRoute.Sitemap = INDUSTRY_DEMO_IDS.map((id) => ({
-    url: `${SITE}/rag-knowledge-assistant/demo/${id}/`,
-    lastModified: demoModified,
+    lastModified: lastModified(ROOT, [...filesIn(dir), ...(PAGE_SOURCES[url] ?? [])]),
   }));
 
   const agents: MetadataRoute.Sitemap = AGENT_APPS.map(({ path: urlPath, repo }) => {
-    const checkout = path.join(ROOT, "..", repo);
+    const checkout = findCheckout(repo);
     return {
       url: `${SITE}${urlPath}`,
-      lastModified: existsSync(path.join(checkout, ".git")) ? lastModified(checkout, ["."]) : BUILD_TIME,
+      lastModified: checkout ? lastModified(checkout, ["."]) : undefined,
     };
   });
 
-  return [...pages, ...demos, ...agents];
+  return [...pages, ...agents];
 }

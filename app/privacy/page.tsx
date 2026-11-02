@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
     "What the Jaseir demo request form, the free AI agents' report form and the RAG chat assistant collect, why, how long it is kept, and how to ask for deletion.",
+  alternates: { canonical: "https://ai.jaseir.com/privacy/" },
 };
 
 const UPDATED = "30 September 2026";

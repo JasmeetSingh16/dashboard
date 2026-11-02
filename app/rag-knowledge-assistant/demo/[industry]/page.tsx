@@ -24,7 +24,8 @@ import "../../rag.css";
 /*
  * The same RAG chat panel as the main page, locked to one tenant with
  * sample content. Statically generated for the 6 industries; anything
- * else is a 404. Not indexed (noindex) and not in any sitemap yet.
+ * else is a 404. Not indexed (noindex), canonical to itself, and kept out
+ * of the sitemap on purpose.
  */
 
 // Same fonts as the main RAG page (next/font de-duplicates the files).
@@ -51,6 +52,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: seoName(demo.title),
     description: `Try a live RAG assistant demo for ${ragDemoPages[industry].noun}s, answering from sample documents with sources.`,
     robots: { index: false, follow: true },
+    alternates: { canonical: `https://ai.jaseir.com${demoPageUrl(industry)}` },
   };
 }
 

@@ -26,6 +26,7 @@ import "./rag.css";
 import AgentIcon from "../../components/agent/AgentIcon";
 import { RelatedAgents } from "../../components/agent/AgentTemplate";
 import { agentVars, getAgent } from "../../lib/agents";
+import { ORGANIZATION_ID } from "../../lib/site";
 
 const agent = getAgent("rag-assistant");
 
@@ -63,11 +64,7 @@ const serviceJsonLd = {
   alternateName: ["RAG chatbot", "RAG AI assistant", "Retrieval-augmented generation chatbot"],
   description: ragSeo.description,
   url: ragLinks.canonical,
-  provider: {
-    "@type": "Organization",
-    name: "Jaseir",
-    url: "https://www.jaseir.com/",
-  },
+  provider: { "@id": ORGANIZATION_ID },
   areaServed: "Worldwide",
   availableChannel: {
     "@type": "ServiceChannel",
